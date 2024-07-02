@@ -1,0 +1,8 @@
+---
+version: 1.1.6
+title: xmlm_test.element_06__test
+---
+Dtd(None)
+ElementStart(Tag(name: "俄语", attributes: [Attribute(name: "լեզու", value: "ռուսերեն")]))
+Data("данные")
+ElementEnd

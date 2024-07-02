@@ -1,0 +1,10 @@
+---
+version: 1.1.6
+title: xmlm_test.data__rbracket_gt__test
+file: ./test/xmlm_test.gleam
+test_name: data__rbracket_gt__test
+---
+Dtd(None)
+ElementStart(Tag(name: "p", attributes: []))
+Data("]>")
+ElementEnd

@@ -1,0 +1,29 @@
+---
+version: 1.1.6
+title: websites.websites__test
+file: ./test/docs_examples/websites.gleam
+test_name: websites__test
+---
+(websites
+ (website
+  (url "https://www.udel.edu/")
+  (name "University of Delaware")
+  (category education)
+  (description ())
+  (reviews
+   (review (rating 5) (comment "Excellent institution with a strong academic program."))
+   (review (rating 4) (comment "Beautiful campus and friendly community."))))
+ (website
+  (url "https://www.wikipedia.org/")
+  (name "Wikipedia")
+  (category information)
+  (description ())
+  (reviews ()))
+ (website
+  (url "https://github.com/")
+  (name "GitHub")
+  (category programming)
+  (description ("A platform for version control and collaboration."))
+  (reviews
+   (review (rating 5) (comment "Essential for developers and teams working on software projects."))
+   (review (rating 4) (comment "Great for open source collaboration.")))))

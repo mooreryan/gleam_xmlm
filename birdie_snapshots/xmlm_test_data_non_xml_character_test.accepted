@@ -1,0 +1,7 @@
+---
+version: 1.1.6
+title: xmlm_test.data__non_xml_character__test
+file: ./test/xmlm_test.gleam
+test_name: data__non_xml_character__test
+---
+ERROR Position(line: 1, column: 4) malformed character stream

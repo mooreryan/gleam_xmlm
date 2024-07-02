@@ -1,0 +1,22 @@
+<root>
+  <a>
+    <b xmlns:snazzy="https://www.example.com/snazzy">
+      <snazzy:c>1.1.1</snazzy:c>
+      <snazzy:c>1.1.2</snazzy:c>
+    </b>
+    <b>
+      <c>1.2.1</c>
+      <c>1.2.2</c>
+    </b>
+  </a>
+  <a>
+    <b xmlns:lala="https://www.example.com/snazzy">
+      <lala:c>2.1.1</lala:c>
+      <lala:c>2.1.2</lala:c>
+    </b>
+    <b>
+      <c>2.2.1</c>
+      <c>2.2.2</c>
+    </b>
+  </a>
+</root>

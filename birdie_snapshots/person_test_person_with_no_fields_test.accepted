@@ -1,0 +1,10 @@
+---
+version: 1.1.6
+title: person_test.person_with_no_fields__test
+file: ./test/examples/person_test.gleam
+test_name: person_with_no_fields__test
+---
+(person
+ (first ())
+ (middle ())
+ (last ()))

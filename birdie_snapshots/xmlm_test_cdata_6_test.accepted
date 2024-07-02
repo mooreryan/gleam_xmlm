@@ -1,0 +1,10 @@
+---
+version: 1.1.6
+title: xmlm_test.cdata_6__test
+file: ./test/xmlm_test.gleam
+test_name: cdata_6__test
+---
+Dtd(None)
+ElementStart(Tag(name: "p", attributes: []))
+Data("</this is malformed!</malformed</malformed & worse>")
+ElementEnd

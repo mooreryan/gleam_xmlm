@@ -1,0 +1,10 @@
+---
+version: 1.1.6
+title: xmlm_test.basic_text_with_space__test
+file: ./test/xmlm_test.gleam
+test_name: basic_text_with_space__test
+---
+Dtd(None)
+ElementStart(Tag(name: "p", attributes: []))
+Data(" text ")
+ElementEnd

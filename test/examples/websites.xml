@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<websites>
+  <website>
+    <url>https://www.udel.edu/</url>
+    <name>University of Delaware</name>
+    <category>Education</category>
+    <reviews>
+      <review>
+        <rating>5</rating>
+        <comment>Excellent institution with a strong academic program.</comment>
+      </review>
+      <review>
+        <rating>4</rating>
+        <comment>Beautiful campus and friendly community.</comment>
+      </review>
+    </reviews>
+  </website>
+  <website>
+    <url>https://www.wikipedia.org/</url>
+    <name>Wikipedia</name>
+    <category>Information</category>
+  </website>
+  <website>
+    <url>https://github.com/</url>
+    <name>GitHub</name>
+    <category>Programming</category>
+    <description>A platform for version control and collaboration.</description>
+    <reviews>
+      <review>
+        <rating>5</rating>
+        <comment>
+          Essential for developers and teams working on software projects.
+        </comment>
+      </review>
+      <review>
+        <rating>4</rating>
+        <comment>Great for open source collaboration.</comment>
+      </review>
+    </reviews>
+  </website>
+</websites>

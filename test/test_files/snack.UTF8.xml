@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE snack PUBLIC "snack" "https://www.example.com/snack.dtd">
+<snack>
+  <fruit yummy="tres" color="green">apple</fruit>
+  <veggie>carrot</veggie>
+  <![CDATA[<greeting>Hello, world!</greeting>]]>
+  <what>AA &amp; &#65;&#x41;</what>
+</snack>

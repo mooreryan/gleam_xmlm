@@ -1,0 +1,7 @@
+---
+version: 1.1.6
+title: xmlm_test.cdata_10__test
+file: ./test/xmlm_test.gleam
+test_name: cdata_10__test
+---
+ERROR Position(line: 1, column: 13) malformed character stream

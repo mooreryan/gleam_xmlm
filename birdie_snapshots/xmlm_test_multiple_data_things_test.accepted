@@ -1,0 +1,12 @@
+---
+version: 1.1.6
+title: xmlm_test.multiple_data_things__test
+---
+Dtd(None)
+ElementStart(Tag(name: "a", attributes: []))
+Data("apple pie\nis good")
+ElementStart(Tag(name: "b", attributes: []))
+Data("yeah\nit is")
+ElementEnd
+Data("hello!")
+ElementEnd

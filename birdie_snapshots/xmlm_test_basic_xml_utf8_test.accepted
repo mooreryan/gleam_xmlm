@@ -1,0 +1,10 @@
+---
+version: 1.1.6
+title: xmlm_test.basic_xml__utf8__test
+file: ./test/xmlm_test.gleam
+test_name: basic_xml__utf8__test
+---
+Dtd(None)
+ElementStart(Tag(name: "a", attributes: []))
+Data("b")
+ElementEnd

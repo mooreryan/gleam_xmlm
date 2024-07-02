@@ -1,0 +1,12 @@
+---
+version: 1.1.6
+title: circles_svg.circles_svg__test
+file: ./test/docs_examples/circles_svg.gleam
+test_name: circles_svg__test
+---
+(svg
+ (style "text/css" "circle:hover {fill-opacity:0.9;}")
+ (container "fill-opacity:0.7;"
+  (circle "6.5cm" "2cm" "100" "fill:red; stroke:black; stroke-width:0.1cm")
+  (circle "6.5cm" "2cm" "100" "fill:blue; stroke:black; stroke-width:0.1cm")
+  (circle "6.5cm" "2cm" "100" "fill:green; stroke:black; stroke-width:0.1cm")))

@@ -1,0 +1,31 @@
+---
+version: 1.1.6
+title: xmlm_tree_test.read_tree__test
+file: ./test/xmlm_tree_test.gleam
+test_name: read_tree__test
+---
+(El(Tag("root"), [
+    (El(Tag("a"), [
+        (El(Tag("b"), [
+            (El(Tag("c"), [
+                (Data("1.1.1"))]))
+            (El(Tag("c"), [
+                (Data("1.1.2"))]))]))
+        (El(Tag("b"), [
+            (El(Tag("c"), [
+                (Data("1.2.1"))]))
+            (El(Tag("c"), [
+                (Data("1.2.2"))]))]))]))
+    (El(Tag("a"), [
+        (El(Tag("b"), [
+            (El(Tag("c"), [
+                (Data("2.1.1"))]))
+            (Data("2nd a - 1st b - between c"))
+            (El(Tag("c"), [
+                (Data("2.1.2"))]))]))
+        (El(Tag("b"), [
+            (El(Tag("c"), [
+                (Data("2.2.1"))]))
+            (Data("2nd a - 2nd b - between c"))
+            (El(Tag("c"), [
+                (Data("2.2.2"))]))]))]))]))

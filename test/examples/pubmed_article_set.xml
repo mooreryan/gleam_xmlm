@@ -1,0 +1,759 @@
+<?xml version="1.0"?>
+<!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2024//EN" "https://dtd.nlm.nih.gov/ncbi/pubmed/out/pubmed_240101.dtd">
+<PubmedArticleSet>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">33349678</PMID>
+      <DateCompleted>
+        <Year>2021</Year>
+        <Month>03</Month>
+        <Day>16</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2022</Year>
+        <Month>04</Month>
+        <Day>21</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Electronic">2058-5276</ISSN>
+          <JournalIssue CitedMedium="Internet">
+            <Volume>6</Volume>
+            <Issue>1</Issue>
+            <PubDate>
+              <Year>2021</Year>
+              <Month>Jan</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Nature microbiology</Title>
+          <ISOAbbreviation>Nat Microbiol</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Community-led, integrated, reproducible multi-omics with anvi'o.</ArticleTitle>
+        <Pagination>
+          <StartPage>3</StartPage>
+          <EndPage>6</EndPage>
+          <MedlinePgn>3-6</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1038/s41564-020-00834-3</ELocationID>
+        <Abstract>
+          <AbstractText>Big data abound in microbiology, but the workflows designed to enable
+            researchers to interpret data can constrain the biological questions that can be asked.
+            Five years after anvi&#x2019;o was first published, this community-led multi-omics
+            platform is maturing into an open software ecosystem that reduces constraints in
+            &#x2018;omics data analyses.</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Eren</LastName>
+            <ForeName>A Murat</ForeName>
+            <Initials>AM</Initials>
+            <Identifier Source="ORCID">0000-0001-9013-4827</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.
+                meren@uchicago.edu.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Committee on Microbiology, University of Chicago, Chicago, IL, USA.
+                meren@uchicago.edu.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Josephine Bay Paul Center for Comparative Molecular Biology and
+                Evolution, Marine Biological Laboratory, Woods Hole, MA, USA. meren@uchicago.edu.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Graduate Program in Biophysical Sciences, University of Chicago, Chicago,
+                IL, USA. meren@uchicago.edu.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Kiefl</LastName>
+            <ForeName>Evan</ForeName>
+            <Initials>E</Initials>
+            <Identifier Source="ORCID">0000-0002-6473-0921</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Graduate Program in Biophysical Sciences, University of Chicago, Chicago,
+                IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Shaiber</LastName>
+            <ForeName>Alon</ForeName>
+            <Initials>A</Initials>
+            <Identifier Source="ORCID">0000-0002-4806-9280</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Graduate Program in Biophysical Sciences, University of Chicago, Chicago,
+                IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Veseli</LastName>
+            <ForeName>Iva</ForeName>
+            <Initials>I</Initials>
+            <Identifier Source="ORCID">0000-0003-2390-5286</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Graduate Program in Biophysical Sciences, University of Chicago, Chicago,
+                IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Miller</LastName>
+            <ForeName>Samuel E</ForeName>
+            <Initials>SE</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Schechter</LastName>
+            <ForeName>Matthew S</ForeName>
+            <Initials>MS</Initials>
+            <Identifier Source="ORCID">0000-0002-8435-3203</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Committee on Microbiology, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Fink</LastName>
+            <ForeName>Isaac</ForeName>
+            <Initials>I</Initials>
+            <Identifier Source="ORCID">0000-0003-3930-029X</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Pan</LastName>
+            <ForeName>Jessica N</ForeName>
+            <Initials>JN</Initials>
+            <Identifier Source="ORCID">0000-0002-6743-6146</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Yousef</LastName>
+            <ForeName>Mahmoud</ForeName>
+            <Initials>M</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Fogarty</LastName>
+            <ForeName>Emily C</ForeName>
+            <Initials>EC</Initials>
+            <Identifier Source="ORCID">0000-0002-8957-9922</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Committee on Microbiology, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Trigodet</LastName>
+            <ForeName>Florian</ForeName>
+            <Initials>F</Initials>
+            <Identifier Source="ORCID">0000-0002-4933-2896</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Watson</LastName>
+            <ForeName>Andrea R</ForeName>
+            <Initials>AR</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Committee on Microbiology, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Esen</LastName>
+            <ForeName>&#xd6;zcan C</ForeName>
+            <Initials>&#xd6;C</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Moore</LastName>
+            <ForeName>Ryan M</ForeName>
+            <Initials>RM</Initials>
+            <Identifier Source="ORCID">0000-0003-3337-8184</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Center for Bioinformatics and Computational Biology, University of
+                Delaware, Delaware, DE, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Clayssen</LastName>
+            <ForeName>Quentin</ForeName>
+            <Initials>Q</Initials>
+            <Identifier Source="ORCID">0000-0002-2574-073X</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Biology, Institute of Microbiology, ETH Zurich, Zurich,
+                Switzerland.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Lee</LastName>
+            <ForeName>Michael D</ForeName>
+            <Initials>MD</Initials>
+            <Identifier Source="ORCID">0000-0001-7750-9145</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Exobiology Branch, NASA Ames Research Center, Mountain View, CA, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Blue Marble Space Institute of Science, Seattle, WA, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Kivenson</LastName>
+            <ForeName>Veronika</ForeName>
+            <Initials>V</Initials>
+            <Identifier Source="ORCID">0000-0002-5715-3126</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Microbiology, Oregon State University, Corvallis, OR, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Graham</LastName>
+            <ForeName>Elaina D</ForeName>
+            <Initials>ED</Initials>
+            <Identifier Source="ORCID">0000-0001-5036-1929</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological Sciences, University of Southern California, Los
+                Angeles, CA, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Merrill</LastName>
+            <ForeName>Bryan D</ForeName>
+            <Initials>BD</Initials>
+            <Identifier Source="ORCID">0000-0002-9967-5539</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Microbiology and Immunology, Stanford University School of
+                Medicine, Stanford, CA, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Karkman</LastName>
+            <ForeName>Antti</ForeName>
+            <Initials>A</Initials>
+            <Identifier Source="ORCID">0000-0003-0983-3319</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Microbiology, University of Helsinki, Helsinki, Finland.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Blankenberg</LastName>
+            <ForeName>Daniel</ForeName>
+            <Initials>D</Initials>
+            <Identifier Source="ORCID">0000-0002-6833-9049</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Genomic Medicine Institute, Lerner Research Institute, Cleveland Clinic,
+                Cleveland, OH, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Department of Molecular Medicine, Cleveland Clinic Lerner College of
+                Medicine, Case Western Reserve University, Cleveland, OH, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Eppley</LastName>
+            <ForeName>John M</ForeName>
+            <Initials>JM</Initials>
+            <Identifier Source="ORCID">0000-0001-5334-1704</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Daniel K. Inouye Center for Microbial Oceanography: Research and
+                Education, University of Hawai'i at M&#x101;noa, Honolulu, HI, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Sj&#xf6;din</LastName>
+            <ForeName>Andreas</ForeName>
+            <Initials>A</Initials>
+            <Identifier Source="ORCID">0000-0001-5350-4219</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Division of CBRN Security and Defence, Swedish Defence Research Agency -
+                FOI, Umea, Sweden.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Scott</LastName>
+            <ForeName>Jarrod J</ForeName>
+            <Initials>JJ</Initials>
+            <AffiliationInfo>
+              <Affiliation>Smithsonian Tropical Research Institute, Bocas del Toro, Republic of
+                Panama.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>V&#xe1;zquez-Campos</LastName>
+            <ForeName>Xabier</ForeName>
+            <Initials>X</Initials>
+            <Identifier Source="ORCID">0000-0003-1134-5058</Identifier>
+            <AffiliationInfo>
+              <Affiliation>NSW Systems Biology Initiative, School of Biotechnology and Biomolecular
+                Sciences, The University of New South Wales, Sydney, New South Wales, Australia.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>McKay</LastName>
+            <ForeName>Luke J</ForeName>
+            <Initials>LJ</Initials>
+            <AffiliationInfo>
+              <Affiliation>Center for Biofilm Engineering, Montana State University, Bozeman, MT,
+                USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Department of Land Resources and Environmental Sciences, Montana State
+                University, Bozeman, MT, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>McDaniel</LastName>
+            <ForeName>Elizabeth A</ForeName>
+            <Initials>EA</Initials>
+            <Identifier Source="ORCID">0000-0003-4692-0913</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Bacteriology, University of Wisconsin-Madison, Madison, WI,
+                USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Stevens</LastName>
+            <ForeName>Sarah L R</ForeName>
+            <Initials>SLR</Initials>
+            <AffiliationInfo>
+              <Affiliation>Wisconsin Institute for Discovery, University of Wisconsin-Madison,
+                Madison, WI, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>American Family Insurance Data Science Institute, University of
+                Wisconsin-Madison, Madison, WI, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Anderson</LastName>
+            <ForeName>Rika E</ForeName>
+            <Initials>RE</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biology, Carleton College, Northfield, MN, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Fuessel</LastName>
+            <ForeName>Jessika</ForeName>
+            <Initials>J</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Medicine, University of Chicago, Chicago, IL, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Fernandez-Guerra</LastName>
+            <ForeName>Antonio</ForeName>
+            <Initials>A</Initials>
+            <AffiliationInfo>
+              <Affiliation>Lundbeck GeoGenetics Centre, The Globe Institute, University of
+                Copenhagen, Copenhagen, Denmark.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Maignien</LastName>
+            <ForeName>Lois</ForeName>
+            <Initials>L</Initials>
+            <AffiliationInfo>
+              <Affiliation>Josephine Bay Paul Center for Comparative Molecular Biology and
+                Evolution, Marine Biological Laboratory, Woods Hole, MA, USA.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Laboratoire de Microbiologie des Environnements Extr&#xea;mes (LM2E),
+                Univ. Brest, CNRS, IFREMER, Plouzan&#xe9;, France.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Delmont</LastName>
+            <ForeName>Tom O</ForeName>
+            <Initials>TO</Initials>
+            <AffiliationInfo>
+              <Affiliation>G&#xe9;nomique M&#xe9;tabolique, Genoscope, Institut Fran&#xe7;ois Jacob,
+                CEA, CNRS, Univ. Evry, Universit&#xe9; Paris-Saclay, Evry, France.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Willis</LastName>
+            <ForeName>Amy D</ForeName>
+            <Initials>AD</Initials>
+            <Identifier Source="ORCID">0000-0002-2802-4317</Identifier>
+            <AffiliationInfo>
+              <Affiliation>Department of Biostatistics, University of Washington, Seattle, WA, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <GrantList CompleteYN="Y">
+          <Grant>
+            <GrantID>P30 DK042086</GrantID>
+            <Acronym>DK</Acronym>
+            <Agency>NIDDK NIH HHS</Agency>
+            <Country>United States</Country>
+          </Grant>
+          <Grant>
+            <GrantID>R35 GM133420</GrantID>
+            <Acronym>GM</Acronym>
+            <Agency>NIGMS NIH HHS</Agency>
+            <Country>United States</Country>
+          </Grant>
+          <Grant>
+            <GrantID>T32 EB009412</GrantID>
+            <Acronym>EB</Acronym>
+            <Agency>NIBIB NIH HHS</Agency>
+            <Country>United States</Country>
+          </Grant>
+        </GrantList>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D013485">Research Support, Non-U.S. Gov't</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Nat Microbiol</MedlineTA>
+        <NlmUniqueID>101674869</NlmUniqueID>
+        <ISSNLinking>2058-5276</ISSNLinking>
+      </MedlineJournalInfo>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D000077558" MajorTopicYN="N">Big Data</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D019295" MajorTopicYN="N">Computational Biology</DescriptorName>
+          <QualifierName UI="Q000379" MajorTopicYN="Y">methods</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D000078332" MajorTopicYN="Y">Data Analysis</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D023281" MajorTopicYN="N">Genomics</DescriptorName>
+          <QualifierName UI="Q000379" MajorTopicYN="N">methods</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D006801" MajorTopicYN="N">Humans</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D008829" MajorTopicYN="N">Microbiology</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012984" MajorTopicYN="Y">Software</DescriptorName>
+        </MeshHeading>
+      </MeshHeadingList>
+      <CoiStatement>Competing interests. The authors declare no competing interests.</CoiStatement>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>2020</Year>
+          <Month>12</Month>
+          <Day>22</Day>
+          <Hour>5</Hour>
+          <Minute>44</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>2020</Year>
+          <Month>12</Month>
+          <Day>23</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>2021</Year>
+          <Month>3</Month>
+          <Day>17</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="pmc-release">
+          <Year>2021</Year>
+          <Month>5</Month>
+          <Day>13</Day>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">33349678</ArticleId>
+        <ArticleId IdType="mid">NIHMS1700564</ArticleId>
+        <ArticleId IdType="pmc">PMC8116326</ArticleId>
+        <ArticleId IdType="doi">10.1038/s41564-020-00834-3</ArticleId>
+        <ArticleId IdType="pii">10.1038/s41564-020-00834-3</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM" IndexingMethod="Curated">
+      <PMID Version="1">30715272</PMID>
+      <DateCompleted>
+        <Year>2020</Year>
+        <Month>05</Month>
+        <Day>18</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2023</Year>
+        <Month>10</Month>
+        <Day>06</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Electronic">1574-6941</ISSN>
+          <JournalIssue CitedMedium="Internet">
+            <Volume>95</Volume>
+            <Issue>4</Issue>
+            <PubDate>
+              <Year>2019</Year>
+              <Month>Apr</Month>
+              <Day>01</Day>
+            </PubDate>
+          </JournalIssue>
+          <Title>FEMS microbiology ecology</Title>
+          <ISOAbbreviation>FEMS Microbiol Ecol</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>The Fe(II)-oxidizing Zetaproteobacteria: historical, ecological and genomic
+          perspectives.</ArticleTitle>
+        <ELocationID EIdType="pii" ValidYN="Y">fiz015</ELocationID>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1093/femsec/fiz015</ELocationID>
+        <Abstract>
+          <AbstractText>The Zetaproteobacteria are a class of bacteria typically associated with
+            marine Fe(II)-oxidizing environments. First discovered in the hydrothermal vents at
+            Loihi Seamount, Hawaii, they have become model organisms for marine microbial Fe(II)
+            oxidation. In addition to deep sea and shallow hydrothermal vents, Zetaproteobacteria
+            are found in coastal sediments, other marine subsurface environments, steel corrosion
+            biofilms and saline terrestrial springs. Isolates from a range of environments all grow
+            by autotrophic Fe(II) oxidation. Their success lies partly in their microaerophily,
+            which enables them to compete with abiotic Fe(II) oxidation at Fe(II)-rich oxic/anoxic
+            transition zones. To determine the known diversity of the Zetaproteobacteria, we have
+            used 16S rRNA gene sequences to define 59 operational taxonomic units (OTUs), at 97%
+            similarity. While some Zetaproteobacteria taxa appear to be cosmopolitan, others are
+            enriched by specific habitats. OTU networks show that certain Zetaproteobacteria
+            co-exist, sharing compatible niches. These niches may correspond with adaptations to O2,
+            H2 and nitrate availability, based on genomic analyses of metabolic potential. Also, a
+            putative Fe(II) oxidation gene has been found in diverse Zetaproteobacteria taxa,
+            suggesting that the Zetaproteobacteria evolved as Fe(II) oxidation specialists. In all,
+            studies suggest that Zetaproteobacteria are widespread, and therefore may have a broad
+            influence on marine and saline terrestrial Fe cycling.</AbstractText>
+          <CopyrightInformation>&#xa9; FEMS 2019.</CopyrightInformation>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>McAllister</LastName>
+            <ForeName>Sean M</ForeName>
+            <Initials>SM</Initials>
+            <AffiliationInfo>
+              <Affiliation>School of Marine Science and Policy, University of Delaware, 700
+                Pilottown Road, 204 Cannon Lab, Lewes, Delaware, USA 19958.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Moore</LastName>
+            <ForeName>Ryan M</ForeName>
+            <Initials>RM</Initials>
+            <AffiliationInfo>
+              <Affiliation>Center for Bioinformatics and Computational Biology, University of
+                Delaware, 15 Innovation Way, 205 Delaware Biotechnology Institute, Newark, Delaware,
+                USA 19711.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Gartman</LastName>
+            <ForeName>Amy</ForeName>
+            <Initials>A</Initials>
+            <AffiliationInfo>
+              <Affiliation>School of Marine Science and Policy, University of Delaware, 700
+                Pilottown Road, 204 Cannon Lab, Lewes, Delaware, USA 19958.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Luther</LastName>
+            <ForeName>George W</ForeName>
+            <Initials>GW</Initials>
+            <AffiliationInfo>
+              <Affiliation>School of Marine Science and Policy, University of Delaware, 700
+                Pilottown Road, 204 Cannon Lab, Lewes, Delaware, USA 19958.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Emerson</LastName>
+            <ForeName>David</ForeName>
+            <Initials>D</Initials>
+            <AffiliationInfo>
+              <Affiliation>Bigelow Laboratory for Ocean Sciences, 60 Bigelow Drive, East Boothbay,
+                Maine, USA 04544.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Chan</LastName>
+            <ForeName>Clara S</ForeName>
+            <Initials>CS</Initials>
+            <AffiliationInfo>
+              <Affiliation>School of Marine Science and Policy, University of Delaware, 700
+                Pilottown Road, 204 Cannon Lab, Lewes, Delaware, USA 19958.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Department of Geological Sciences, University of Delaware, 101 Penny
+                Hall, Newark, Delaware, USA 19716.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <GrantList CompleteYN="Y">
+          <Grant>
+            <GrantID>P20 GM103446</GrantID>
+            <Acronym>GM</Acronym>
+            <Agency>NIGMS NIH HHS</Agency>
+            <Country>United States</Country>
+          </Grant>
+        </GrantList>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D052061">Research Support, N.I.H., Extramural</PublicationType>
+          <PublicationType UI="D013485">Research Support, Non-U.S. Gov't</PublicationType>
+          <PublicationType UI="D013486">Research Support, U.S. Gov't, Non-P.H.S.</PublicationType>
+          <PublicationType UI="D016454">Review</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>FEMS Microbiol Ecol</MedlineTA>
+        <NlmUniqueID>8901229</NlmUniqueID>
+        <ISSNLinking>0168-6496</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D001426">Bacterial Proteins</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D005296">Ferrous Compounds</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D012336">RNA, Ribosomal, 16S</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D001426" MajorTopicYN="N">Bacterial Proteins</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D017753" MajorTopicYN="N">Ecosystem</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005296" MajorTopicYN="N">Ferrous Compounds</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="Y">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D016680" MajorTopicYN="N">Genome, Bacterial</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D060086" MajorTopicYN="N">Hydrothermal Vents</DescriptorName>
+          <QualifierName UI="Q000382" MajorTopicYN="N">microbiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010084" MajorTopicYN="N">Oxidation-Reduction</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010802" MajorTopicYN="N">Phylogeny</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D020560" MajorTopicYN="N">Proteobacteria</DescriptorName>
+          <QualifierName UI="Q000145" MajorTopicYN="N">classification</QualifierName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000302" MajorTopicYN="N">isolation &amp; purification</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="Y">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012336" MajorTopicYN="N">RNA, Ribosomal, 16S</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012623" MajorTopicYN="N">Seawater</DescriptorName>
+          <QualifierName UI="Q000382" MajorTopicYN="Y">microbiology</QualifierName>
+        </MeshHeading>
+      </MeshHeadingList>
+      <KeywordList Owner="NOTNLM">
+        <Keyword MajorTopicYN="N">Zetaproteobacteria</Keyword>
+        <Keyword MajorTopicYN="N">Fe(II) oxidation</Keyword>
+        <Keyword MajorTopicYN="N">hydrothermal vents</Keyword>
+        <Keyword MajorTopicYN="N">marine Fe cycling</Keyword>
+        <Keyword MajorTopicYN="N">microbial ecology</Keyword>
+        <Keyword MajorTopicYN="N">phylogenetic analysis</Keyword>
+      </KeywordList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="received">
+          <Year>2018</Year>
+          <Month>10</Month>
+          <Day>12</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="accepted">
+          <Year>2019</Year>
+          <Month>1</Month>
+          <Day>29</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>2019</Year>
+          <Month>2</Month>
+          <Day>5</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>2020</Year>
+          <Month>5</Month>
+          <Day>19</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>2019</Year>
+          <Month>2</Month>
+          <Day>5</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="pmc-release">
+          <Year>2019</Year>
+          <Month>1</Month>
+          <Day>30</Day>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">30715272</ArticleId>
+        <ArticleId IdType="pmc">PMC6443915</ArticleId>
+        <ArticleId IdType="doi">10.1093/femsec/fiz015</ArticleId>
+        <ArticleId IdType="pii">5304609</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+</PubmedArticleSet>

@@ -1,0 +1,29 @@
+---
+version: 1.1.6
+title: xmlm_tree_test.read_tree__with_namespaces__test
+file: ./test/xmlm_tree_test.gleam
+test_name: read_tree__with_namespaces__test
+---
+(El(Tag("root"), [
+    (El(Tag("a"), [
+        (El(Tag("b", [At("http://www.w3.org/2000/xmlns/:snazzy", "https://www.example.com/snazzy")]), [
+            (El(Tag("https://www.example.com/snazzy:c"), [
+                (Data("1.1.1"))]))
+            (El(Tag("https://www.example.com/snazzy:c"), [
+                (Data("1.1.2"))]))]))
+        (El(Tag("b"), [
+            (El(Tag("c"), [
+                (Data("1.2.1"))]))
+            (El(Tag("c"), [
+                (Data("1.2.2"))]))]))]))
+    (El(Tag("a"), [
+        (El(Tag("b", [At("http://www.w3.org/2000/xmlns/:lala", "https://www.example.com/snazzy")]), [
+            (El(Tag("https://www.example.com/snazzy:c"), [
+                (Data("2.1.1"))]))
+            (El(Tag("https://www.example.com/snazzy:c"), [
+                (Data("2.1.2"))]))]))
+        (El(Tag("b"), [
+            (El(Tag("c"), [
+                (Data("2.2.1"))]))
+            (El(Tag("c"), [
+                (Data("2.2.2"))]))]))]))]))

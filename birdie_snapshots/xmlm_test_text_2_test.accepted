@@ -1,0 +1,8 @@
+---
+version: 1.1.6
+title: xmlm_test.text__2__test
+---
+Dtd(None)
+ElementStart(Tag(name: "p", attributes: []))
+Data("*欄*")
+ElementEnd

@@ -1,0 +1,61 @@
+---
+version: 1.1.6
+title: pubmed_article_set_test.pubmed_article_set__test
+file: ./test/examples/pubmed_article_set_test.gleam
+test_name: pubmed_article_set__test
+---
+(pubmed_article_set
+ (pubmed_article
+  (pmid "33349678")
+  (doi ("10.1038/s41564-020-00834-3"))
+  (pub_year "2021")
+  (title "Community-led, integrated, reproducible multi-omics with anvi'o.")
+  (abstract ("Big data abound in microbiology, but the...ces constraints in ‘omics data analyses."))
+   (authors
+    (author (name "Eren") (orcid ("0000-0001-9013-4827")))
+    (author (name "Kiefl") (orcid ("0000-0002-6473-0921")))
+    (author (name "Shaiber") (orcid ("0000-0002-4806-9280")))
+    (author (name "Veseli") (orcid ("0000-0003-2390-5286")))
+    (author (name "Miller") (orcid ()))
+    (author (name "Schechter") (orcid ("0000-0002-8435-3203")))
+    (author (name "Fink") (orcid ("0000-0003-3930-029X")))
+    (author (name "Pan") (orcid ("0000-0002-6743-6146")))
+    (author (name "Yousef") (orcid ()))
+    (author (name "Fogarty") (orcid ("0000-0002-8957-9922")))
+    (author (name "Trigodet") (orcid ("0000-0002-4933-2896")))
+    (author (name "Watson") (orcid ()))
+    (author (name "Esen") (orcid ()))
+    (author (name "Moore") (orcid ("0000-0003-3337-8184")))
+    (author (name "Clayssen") (orcid ("0000-0002-2574-073X")))
+    (author (name "Lee") (orcid ("0000-0001-7750-9145")))
+    (author (name "Kivenson") (orcid ("0000-0002-5715-3126")))
+    (author (name "Graham") (orcid ("0000-0001-5036-1929")))
+    (author (name "Merrill") (orcid ("0000-0002-9967-5539")))
+    (author (name "Karkman") (orcid ("0000-0003-0983-3319")))
+    (author (name "Blankenberg") (orcid ("0000-0002-6833-9049")))
+    (author (name "Eppley") (orcid ("0000-0001-5334-1704")))
+    (author (name "Sjödin") (orcid ("0000-0001-5350-4219")))
+    (author (name "Scott") (orcid ()))
+    (author (name "Vázquez-Campos") (orcid ("0000-0003-1134-5058")))
+    (author (name "McKay") (orcid ()))
+    (author (name "McDaniel") (orcid ("0000-0003-4692-0913")))
+    (author (name "Stevens") (orcid ()))
+    (author (name "Anderson") (orcid ()))
+    (author (name "Fuessel") (orcid ()))
+    (author (name "Fernandez-Guerra") (orcid ()))
+    (author (name "Maignien") (orcid ()))
+    (author (name "Delmont") (orcid ()))
+    (author (name "Willis") (orcid ("0000-0002-2802-4317")))))
+ (pubmed_article
+  (pmid "30715272")
+  (doi ("10.1093/femsec/fiz015"))
+  (pub_year "2019")
+  (title "The Fe(II)-oxidizing Zetaproteobacteria: historical, ecological and genomic perspectives.")
+  (abstract ("The Zetaproteobacteria are a class of ba...arine and saline terrestrial Fe cycling."))
+   (authors
+    (author (name "McAllister") (orcid ()))
+    (author (name "Moore") (orcid ()))
+    (author (name "Gartman") (orcid ()))
+    (author (name "Luther") (orcid ()))
+    (author (name "Emerson") (orcid ()))
+    (author (name "Chan") (orcid ())))))

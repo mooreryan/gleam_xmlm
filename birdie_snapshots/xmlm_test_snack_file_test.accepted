@@ -1,0 +1,20 @@
+---
+version: 1.1.6
+title: xmlm_test.snack_file__test
+---
+Dtd(<!DOCTYPE snack PUBLIC "snack" "https://www.example.com/snack.dtd">)
+ElementStart(Tag(name: "snack", attributes: []))
+Data("\n  ")
+ElementStart(Tag(name: "fruit", attributes: [Attribute(name: "color", value: "green"), Attribute(name: "yummy", value: "tres")]))
+Data("apple")
+ElementEnd
+Data("\n  ")
+ElementStart(Tag(name: "veggie", attributes: []))
+Data("carrot")
+ElementEnd
+Data("\n  <greeting>Hello, world!</greeting>\n  ")
+ElementStart(Tag(name: "what", attributes: []))
+Data("AA & AA")
+ElementEnd
+Data("\n")
+ElementEnd
