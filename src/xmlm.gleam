@@ -236,14 +236,14 @@ pub fn uchar_utf8(bit_array: InputStream) -> Result(
   UnicodeLexerError,
 ) {
   case bit_array {
-    [byte0, ..bit_array] -> {
-      case utf8_length(byte0) {
-        0 -> Error(UnicodeLexerMalformed)
-        1 -> Ok(#(byte0, bit_array))
-        2 -> do_uchar_utf8_len2(bit_array, byte0)
-        3 -> do_uchar_utf8_len3(bit_array, byte0)
-        4 -> do_uchar_utf8_len4(bit_array, byte0)
-        _ -> panic as "unreachable"
+    [byte0, ..bytes] -> {
+      case byte0 {
+        n if 0 <= n && n <= 127 -> Ok(#(byte0, bytes))
+        n if 128 <= n && n <= 193 -> Error(UnicodeLexerMalformed)
+        n if 194 <= n && n <= 223 -> do_uchar_utf8_len2(bytes, byte0)
+        n if 224 <= n && n <= 239 -> do_uchar_utf8_len3(bytes, byte0)
+        n if 240 <= n && n <= 244 -> do_uchar_utf8_len4(bytes, byte0)
+        _ -> Error(UnicodeLexerMalformed)
       }
     }
     [] -> Error(UnicodeLexerEoi)
@@ -383,18 +383,6 @@ fn most_significant_bytes_are_not_10(n: Int) -> Bool {
   // positive numbers--might be worth switching.
 
   int.bitwise_and(n, 0b11000000) != 0b10000000
-}
-
-/// A length of 0 indicates failure.
-fn utf8_length(unsigned_char: Int) -> Int {
-  case unsigned_char {
-    n if 0 <= n && n <= 127 -> 1
-    n if 128 <= n && n <= 193 -> 0
-    n if 194 <= n && n <= 223 -> 2
-    n if 224 <= n && n <= 239 -> 3
-    n if 240 <= n && n <= 244 -> 4
-    _ -> 0
-  }
 }
 
 fn int16_be(

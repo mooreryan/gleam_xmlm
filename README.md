@@ -43,7 +43,21 @@ fprof:profile().
 fprof:analyse({dest, "_output/profile.fprof"}).
 ```
 
-Once that finishes (it shouldn't take more than a few moments), then run `just erlgrind` to view the profile with kchachegrind.
+If you want to profile using a longer file, you can run the following instead.
+
+
+```
+Input = bench@run_in_shell:make_input("/home/ryan/projects/gleam/xmlm/test/test_files/33397721_long.xml").
+fprof:trace(start).
+bench@run_in_shell:no_op(Input).
+fprof:trace(stop).
+fprof:profile().
+fprof:analyse({dest, "_output/profile.fprof"}).
+```
+
+(You can also use `bench@run_in_shell:count_start_signals(Input)` rather than `no_op`.)
+
+Once either one of the above finishes running (it shouldn't take more than a few moments), then run `just erlgrind` to view the profile with kchachegrind.
 
 Note that this requires both [kcachegrind](https://kcachegrind.sourceforge.net/html/Home.html) and [erlgrind](https://github.com/isacssouza/erlgrind) to be installed.
 

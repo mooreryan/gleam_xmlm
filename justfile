@@ -70,15 +70,16 @@ bench_signals_erlang: mk_output_dir build_erlang
 
   TIMESTAMP=$(date +%Y_%m_%d_%H_%M_%S)
   BENCH_OUT="{{ output_dir }}/bench_signals_erlang_33397721.${TIMESTAMP}.txt"
+  BENCH_OUT_RSCRIPT="{{ output_dir }}/bench_signals_erlang_33397721.${TIMESTAMP}.R"
   BENCH_OUT_PLOT="{{ output_dir }}/bench_signals_erlang_33397721.${TIMESTAMP}.pdf"
 
   echo "outfile: $BENCH_OUT"
 
-  gleam run -m bench/bench_signals -- test/test_files/33397721.xml \
+  gleam run -m bench/bench_signals -- test/test_files/33397721_long.xml \
     2> $BENCH_OUT \
     && grep '^# mean' $BENCH_OUT
 
-  cat << EOF > yooo.txt
+  cat << EOF > "$BENCH_OUT_RSCRIPT"
     library(ggplot2)
 
     df <- read.table(
@@ -86,11 +87,11 @@ bench_signals_erlang: mk_output_dir build_erlang
       sep = "|", col.names = c("bench", "time")
     )
 
-    ggplot(df, aes(x = time, fill = bench)) + geom_density(alpha = 0.25)
-    ggsave("$BENCH_OUT_PLOT")
+    plt <- ggplot(df, aes(x = time, fill = bench)) + geom_density(alpha = 0.25)
+    ggsave("$BENCH_OUT_PLOT", plt)
   EOF
 
-  Rscript --vanilla yooo.txt
+  Rscript --vanilla "$BENCH_OUT_RSCRIPT"
 
   qpdfview "$BENCH_OUT_PLOT" &
 

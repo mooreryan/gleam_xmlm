@@ -1,9 +1,42 @@
+import simplifile
 import xmlm
 
 pub fn main() {
   xmlm.from_string(xml)
   |> xmlm.with_encoding(xmlm.Utf8)
   |> xmlm.signals
+}
+
+pub fn no_op(input) {
+  case xmlm.eoi(input) {
+    Error(e) -> Error(e)
+    Ok(#(True, input)) -> Ok(input)
+    Ok(#(False, input)) -> {
+      case xmlm.signal(input) {
+        Ok(#(_, input)) -> {
+          no_op(input)
+        }
+        Error(e) -> Error(e)
+      }
+    }
+  }
+}
+
+pub fn count_start_signals(input) {
+  xmlm.fold_signals(input, 0, fn(count, signal) {
+    case signal {
+      xmlm.ElementStart(_) -> count + 1
+      _ -> count
+    }
+  })
+}
+
+pub fn make_input(filename) {
+  let assert Ok(xml) = simplifile.read_bits(filename)
+
+  xml
+  |> xmlm.from_bit_array
+  |> xmlm.with_encoding(xmlm.Utf8)
 }
 
 const xml = "<?xml version=\"1.0\"?>

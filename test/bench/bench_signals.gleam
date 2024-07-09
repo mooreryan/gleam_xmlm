@@ -21,11 +21,11 @@ pub fn main() {
 
   let input = xmlm.from_string(xml) |> xmlm.with_encoding(xmlm.Utf8)
 
-  fn() { xmlm.signals(input) }
-  |> bench.run(msg: "xmlm.signals", times: times, burn: burn)
-
   fn() { count_start_signals(input) }
   |> bench.run(msg: "count_start_signals", times: times, burn: burn)
+
+  fn() { no_op(input) }
+  |> bench.run(msg: "no_op", times: times, burn: burn)
 }
 
 fn count_start_signals(input) {
@@ -35,4 +35,19 @@ fn count_start_signals(input) {
       _ -> count
     }
   })
+}
+
+fn no_op(input) {
+  case xmlm.eoi(input) {
+    Error(e) -> Error(e)
+    Ok(#(True, input)) -> Ok(input)
+    Ok(#(False, input)) -> {
+      case xmlm.signal(input) {
+        Ok(#(_, input)) -> {
+          no_op(input)
+        }
+        Error(e) -> Error(e)
+      }
+    }
+  }
 }
