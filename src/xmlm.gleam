@@ -159,8 +159,8 @@ fn make_input_uchar(
           input,
           internal_input_error_from_unicode_lexer_error(e),
         ))
-      Ok(#(uchar, bit_array)) -> {
-        let input = Input(..input, stream: bit_array)
+      Ok(#(uchar, stream)) -> {
+        let input = Input(..input, stream: stream)
         Ok(#(uchar, input))
       }
     }
@@ -173,9 +173,9 @@ fn input_uchar_byte() -> fn(Input) -> Result(#(Int, Input), InputError) {
 }
 
 fn uchar_byte(
-  bit_array: InputStream,
+  stream: InputStream,
 ) -> Result(#(Int, InputStream), UnicodeLexerError) {
-  case bit_array {
+  case stream {
     [byte, ..rest] -> Ok(#(byte, rest))
     [] -> Error(UnicodeLexerEoi)
   }
@@ -186,9 +186,9 @@ fn input_uchar_iso_8859_1() -> fn(Input) -> Result(#(Int, Input), InputError) {
 }
 
 fn uchar_iso_8859_1(
-  bit_array: InputStream,
+  stream: InputStream,
 ) -> Result(#(Int, InputStream), UnicodeLexerError) {
-  case bit_array {
+  case stream {
     [byte, ..rest] -> Ok(#(byte, rest))
     [] -> Error(UnicodeLexerEoi)
   }
@@ -200,9 +200,9 @@ fn input_uchar_iso_8859_15() -> fn(Input) -> Result(#(Int, Input), InputError) {
 
 // https://www.iana.org/assignments/charset-reg/ISO-8859-15
 fn uchar_iso_8859_15(
-  bit_array: InputStream,
+  stream: InputStream,
 ) -> Result(#(Int, InputStream), UnicodeLexerError) {
-  case bit_array {
+  case stream {
     // € 
     [0x00A4, ..rest] -> Ok(#(0x20AC, rest))
     // Š 
@@ -231,11 +231,11 @@ fn input_uchar_utf8() -> fn(Input) -> Result(#(Int, Input), InputError) {
 }
 
 @internal
-pub fn uchar_utf8(bit_array: InputStream) -> Result(
+pub fn uchar_utf8(stream: InputStream) -> Result(
   #(Int, InputStream),
   UnicodeLexerError,
 ) {
-  case bit_array {
+  case stream {
     [byte0, ..bytes] -> {
       case byte0 {
         n if 0 <= n && n <= 127 -> Ok(#(byte0, bytes))
@@ -251,11 +251,11 @@ pub fn uchar_utf8(bit_array: InputStream) -> Result(
 }
 
 fn do_uchar_utf8_len2(
-  bit_array: InputStream,
+  stream: InputStream,
   byte0: Int,
 ) -> Result(#(Int, InputStream), UnicodeLexerError) {
-  case bit_array {
-    [byte1, ..bit_array] -> {
+  case stream {
+    [byte1, ..stream] -> {
       case byte1 |> most_significant_bytes_are_not_10 {
         True -> Error(UnicodeLexerMalformed)
         False -> {
@@ -264,7 +264,7 @@ fn do_uchar_utf8_len2(
             |> int.bitwise_shift_left(6)
             |> int.bitwise_or(int.bitwise_and(byte1, 0x3F))
 
-          Ok(#(result, bit_array))
+          Ok(#(result, stream))
         }
       }
     }
@@ -273,11 +273,11 @@ fn do_uchar_utf8_len2(
 }
 
 fn do_uchar_utf8_len3(
-  bit_array: InputStream,
+  stream: InputStream,
   byte0: Int,
 ) -> Result(#(Int, InputStream), UnicodeLexerError) {
-  case bit_array {
-    [byte1, byte2, ..bit_array] -> {
+  case stream {
+    [byte1, byte2, ..stream] -> {
       case byte2 |> most_significant_bytes_are_not_10 {
         True -> Error(UnicodeLexerMalformed)
         False -> {
@@ -303,7 +303,7 @@ fn do_uchar_utf8_len3(
                       let result =
                         b0 |> int.bitwise_or(b1) |> int.bitwise_or(b2)
 
-                      Ok(#(result, bit_array))
+                      Ok(#(result, stream))
                     }
                   }
                 }
@@ -319,11 +319,11 @@ fn do_uchar_utf8_len3(
 }
 
 fn do_uchar_utf8_len4(
-  bit_array: InputStream,
+  stream: InputStream,
   byte0: Int,
 ) -> Result(#(Int, InputStream), UnicodeLexerError) {
-  case bit_array {
-    [byte1, byte2, byte3, ..bit_array] -> {
+  case stream {
+    [byte1, byte2, byte3, ..stream] -> {
       case
         most_significant_bytes_are_not_10(byte3)
         || most_significant_bytes_are_not_10(byte2)
@@ -359,7 +359,7 @@ fn do_uchar_utf8_len4(
                         |> int.bitwise_or(b2)
                         |> int.bitwise_or(b3)
 
-                      Ok(#(result, bit_array))
+                      Ok(#(result, stream))
                     }
                   }
                 }
@@ -455,9 +455,9 @@ fn input_uchar_ascii() -> fn(Input) -> Result(#(Int, Input), InputError) {
 }
 
 fn uchar_ascii(
-  bit_array: InputStream,
+  stream: InputStream,
 ) -> Result(#(Int, InputStream), UnicodeLexerError) {
-  case bit_array {
+  case stream {
     [byte, ..rest] if byte <= 127 -> Ok(#(byte, rest))
     [] -> Error(UnicodeLexerEoi)
     _ -> Error(UnicodeLexerMalformed)
@@ -832,7 +832,7 @@ pub fn input_to_string(input: Input) -> String {
   <> string.inspect(input.encoding)
   <> "\n\tstrip: "
   <> string.inspect(input.strip)
-  <> "\n\tbit_array: "
+  <> "\n\tstream: "
   <> string.inspect(input.stream)
   <> "\n\tchar: "
   <> string.inspect(input.char)
