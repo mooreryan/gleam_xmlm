@@ -1,11 +1,12 @@
 # xmlm
 
-Xmlm is a package for working with XML data in Gleam.
+Xmlm is a pull-based XML parser for Gleam, in a similar style as the OCaml [xmlm](https://erratique.ch/software/xmlm/doc/Xmlm/index.html) library.
 
 ## Documentation & Usage
 
 - For documentation and some usage examples, see the API docs in `src/xmlm.gleam`
 - For complete XML processing examples, see the `test/examples` directory.
+- Tests include XML spec conformance tests (currently the OASIS/NIST suite only), which also is currently serving as the "documentation" for where it diverges from the XML spec (i.e., in the same ways as the OCaml library on which it is based does), as well as the integration tests from this Rust library (https://github.com/RazrFalcon/xmlparser/tree/master/tests/integration).
 
 ## Hacking
 

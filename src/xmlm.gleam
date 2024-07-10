@@ -1,11 +1,13 @@
-//// These docs are a work in progress.  Until they are more complete, check out
-//// some of the full examples located in the `test/examples` directory.
+//// For usage examples and strategies for working with this library, check out 
+//// the programs located in the `test/examples` directory.
 //// 
-//// *Note!*  Don't forget to work with the `Input` that is returned by any 
-//// "inputting" function rather than the original.
+//// ## Notes
 //// 
-//// Note! If something is marked as being "unspecified", do not depend on it.  
-//// It may change at any time without a major version bump.
+//// - Don't forget to work with the `Input` that is returned by any 
+////   "inputting" function rather than the original.
+//// - If something is marked as being "unspecified", do not depend on it.  
+////   It may change at any time without a major version bump.  This mainly 
+////   applies to the various `*_to_string` functions.
 ////
 
 import gleam/bit_array
@@ -618,7 +620,7 @@ pub fn tag_to_string(tag: Tag) -> String {
 /// trees    := ( tree child ) | epsilon ;
 /// ```
 /// 
-/// Note the `trees` production` which expresses the fact there there will never 
+/// Note the `trees` production which expresses the fact there there will never 
 /// be two consecutive `Data` signals in the children of an element.
 /// 
 /// The `Input` type and functions that work with it deal only with well-formed 
@@ -924,7 +926,7 @@ pub fn from_bit_array(source: BitArray) -> Input {
   )
 }
 
-/// xmlm.with_encoding(input) sets the `input` to use the given `encoding`.
+/// `xmlm.with_encoding(input)` sets the `input` to use the given `encoding`.
 /// 
 pub fn with_encoding(input: Input, encoding: Encoding) -> Input {
   Input(..input, encoding: Some(encoding))
@@ -2910,13 +2912,15 @@ pub fn peek(input: Input) -> Result(#(Signal, Input), InputError) {
 
 /// `xmlm.signal(input)` inputs a `Signal`.  
 /// 
-/// Repeatedly invoking the function / with the same input abstraction will
-/// either generate a well-formed sequence apple shton / of signals or raise an
-/// error. Additionally, no two consecutive Data signals / can appear in the
+/// Repeatedly invoking the function with the same input abstraction will
+/// either generate a well-formed sequence apple shton of signals or raise an
+/// error. Additionally, no two consecutive Data signals can appear in the
 /// sequence, and their strings will always be non-empty.
 /// 
-/// Note: after a well-formed sequence has been input, another sequence can be
-/// input.  This behavior is **deprecated**.
+/// Note: Currently, after a well-formed sequence has been input, another 
+/// sequence can be input.  However, this behavior is **deprecated**. (It is 
+/// inherited from the OCaml library on which this one is based, and will chage 
+/// at some point in the future.)
 /// 
 pub fn signal(input: Input) -> Result(#(Signal, Input), InputError) {
   // Note: this guard is for the document sequences. document sequences will
