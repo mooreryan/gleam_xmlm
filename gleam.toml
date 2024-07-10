@@ -1,7 +1,7 @@
 name = "xmlm"
 version = "1.0.0"
 
-description = "An XML parser for the Gleam programming language"
+description = "An pull-based XML parser for the Gleam programming language"
 licences = ["Apache-2.0", "MIT"]
 repository = { type = "github", user = "mooreryan", repo = "gleam_xmlm" }
 
