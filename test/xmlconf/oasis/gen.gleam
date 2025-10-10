@@ -29,7 +29,7 @@ fn tests_that_should_actually_pass(id, sections) {
       // 2.6 Processing Instructions
       // [16] {PI}
       "[16]",
-      // 2.8 
+      // 2.8
       // [29] {markupdecl}
       // [30] {extSubset}
       // [31] {extSubsetDecl}
@@ -40,7 +40,7 @@ fn tests_that_should_actually_pass(id, sections) {
       // [52] {AttlistDecl}
       // [53] {AttDef}
       "3.3", "[52]", "[53]",
-      // 3.3.1 Attribute Types -- Enumerated Attribute Types 
+      // 3.3.1 Attribute Types -- Enumerated Attribute Types
       // [54] {AttType}
       // [55] {StringType}
       // [56] {TokenizedType}
@@ -230,16 +230,16 @@ fn test_case_from_attributes(attributes: List(xmlm.Attribute)) -> TestCase {
       xmlm.Name("", "URI") -> {
         let file_name = test_file_prefix <> attribute.value
 
-        case simplifile.verify_is_file(file_name) {
+        case simplifile.is_file(file_name) {
           Ok(True) -> Nil
           Ok(False) -> panic as { "not file: " <> file_name }
           Error(err) ->
             panic as {
-              "error checking file: "
-              <> string.inspect(err)
-              <> " -- "
-              <> file_name
-            }
+                "error checking file: "
+                <> string.inspect(err)
+                <> " -- "
+                <> file_name
+              }
         }
 
         TestCase(..test_case, file_name: file_name)

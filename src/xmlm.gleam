@@ -233,10 +233,9 @@ fn input_uchar_utf8() -> fn(Input) -> Result(#(Int, Input), InputError) {
 }
 
 @internal
-pub fn uchar_utf8(stream: InputStream) -> Result(
-  #(Int, InputStream),
-  UnicodeLexerError,
-) {
+pub fn uchar_utf8(
+  stream: InputStream,
+) -> Result(#(Int, InputStream), UnicodeLexerError) {
   case stream {
     [byte0, ..bytes] -> {
       case byte0 {

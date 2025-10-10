@@ -1,5 +1,5 @@
 name = "xmlm"
-version = "1.0.0"
+version = "1.0.1"
 
 description = "An pull-based XML parser for the Gleam programming language"
 licences = ["Apache-2.0", "MIT"]
@@ -13,5 +13,5 @@ argv = ">= 1.0.2 and < 2.0.0"
 birdie = ">= 1.1.6 and < 2.0.0"
 birl = ">= 1.7.1 and < 2.0.0"
 gleeunit = ">= 1.0.0 and < 2.0.0"
-qcheck_gleeunit_utils = ">= 0.1.0 and < 1.0.0"
-simplifile = ">= 1.7.0 and < 2.0.0"
+qcheck_gleeunit_utils = ">= 1.0.0 and < 2.0.0"
+simplifile = ">= 2.3.0 and < 3.0.0"

@@ -34,7 +34,7 @@ fn svg_to_string(svg: Svg) -> String {
 }
 
 fn do_svg_to_string(svg: Svg, level: Int) -> String {
-  let indent = string.pad_left("", to: level, with: "  ")
+  let indent = string.pad_start("", to: level, with: "  ")
   case svg {
     Svg(svgs) ->
       indent

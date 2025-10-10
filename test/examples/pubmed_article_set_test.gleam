@@ -6,8 +6,7 @@ import gleam/result
 import gleam/string
 import simplifile
 import xmlm.{
-  type Attribute, type Input, type Tag, Data, Dtd, ElementEnd, ElementStart,
-  Name, Tag,
+  type Attribute, type Input, Data, Dtd, ElementEnd, ElementStart, Name, Tag,
 }
 
 pub fn pubmed_article_set__test() {
@@ -81,38 +80,10 @@ fn input_pubmed_article(input: Input) -> Result(#(PubmedArticle, Input), String)
   Ok(#(article, input))
 }
 
-fn skip_until_next_pubmed_article_or_eoi(input: xmlm.Input) -> _ {
-  case xmlm.eoi(input) {
-    Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(True, input)) -> {
-      // If it is EOI, then we're done 
-      Ok(input)
-    }
-    Ok(#(False, input)) -> {
-      // If it is not EOI, then we have to check for certain end tags 
-      case xmlm.peek(input) {
-        Error(e) -> Error(xmlm.input_error_to_string(e))
-        Ok(#(ElementStart(Tag(Name("", "PubmedArticle"), _)), input))
-        | Ok(#(ElementStart(Tag(Name("", "PubmedBookArticle"), _)), input))
-        | Ok(#(ElementStart(Tag(Name("", "DeleteCitation"), _)), input)) ->
-          Ok(input)
-        Ok(#(_, input)) -> {
-          // There is still more stuff we have to skip, so eat the next signal
-          // and recurse.
-          case xmlm.signal(input) {
-            Error(e) -> Error(xmlm.input_error_to_string(e))
-            Ok(#(_, input)) -> skip_until_next_pubmed_article_or_eoi(input)
-          }
-        }
-      }
-    }
-  }
-}
-
 /// Handle the <Article> element
 ///
 /// Note: the caller will need to advance the input to the next starting spot.
-/// 
+///
 fn input_article(
   input: Input,
   // Will be used to accumulate the state from the element.
@@ -152,11 +123,11 @@ fn input_article(
   use #(doi, input) <- result.try(case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
     Ok(#(ElementStart(Tag(Name("", "Pagination"), _)), input)) -> {
-      // We need to skip over the pagination element      
+      // We need to skip over the pagination element
       use input <- result.try(skip_element_and_any_children(input))
 
       // Since we have seen a Pagination, ELocationID is now optional. So we
-      // must check for it. 
+      // must check for it.
       case xmlm.peek(input) {
         Error(e) -> Error(xmlm.input_error_to_string(e))
         Ok(#(ElementStart(Tag(Name("", "ELocationID"), _)), input)) ->
@@ -220,7 +191,7 @@ fn do_input_pub_date(
     Ok(#(ElementEnd, input)), 0 -> Ok(#(date, input))
 
     Ok(#(ElementEnd, input)), depth -> {
-      // We still need to get to the closing PubDate tag. 
+      // We still need to get to the closing PubDate tag.
       do_input_pub_date(input, depth - 1, date)
     }
     Ok(#(ElementStart(Tag(Name("", "Year"), _)), input)), depth
@@ -370,8 +341,8 @@ fn do_author_sequence(
   }
 }
 
-/// Next tags should be either `Identifier` or `AffiliationInfo` or the next 
-/// `Author` 
+/// Next tags should be either `Identifier` or `AffiliationInfo` or the next
+/// `Author`
 fn input_author_name(input: Input) -> Result(#(String, Input), String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
@@ -440,17 +411,17 @@ fn input_orcid(input: Input) -> Result(#(Option(String), Input), String) {
 }
 
 // =============================================================================
-// 
+//
 // MARK: xmlm utils
-// 
+//
 // =============================================================================
 
-/// `accept_dtd(input)` inputs the `Dtd` if it is the next `Signal`, or returns 
+/// `accept_dtd(input)` inputs the `Dtd` if it is the next `Signal`, or returns
 /// an error if any other `Signal` is encountered.
-/// 
-/// *Note!* `Dtd` signals don't have corresponding `ElementEnd` signals, so the 
-/// caller need not address it. 
-/// 
+///
+/// *Note!* `Dtd` signals don't have corresponding `ElementEnd` signals, so the
+/// caller need not address it.
+///
 fn accept_dtd(input: Input) -> Result(Input, String) {
   case xmlm.signal(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
@@ -464,10 +435,10 @@ fn accept_dtd(input: Input) -> Result(Input, String) {
 
 /// `accept(input, signal)` inputs the next `Signal` if it is equal to the given
 /// `signal`, or returns an error if any other `Signal` is encountered.
-/// 
-/// *Note!*  If accepting and `ElementStart` signal, then the caller must handle 
+///
+/// *Note!*  If accepting and `ElementStart` signal, then the caller must handle
 /// the corresponding `ElementEnd` signal.
-/// 
+///
 fn accept(input: Input, expected_signal: xmlm.Signal) -> Result(Input, String) {
   // Using `peek` here rather than `signal` along with a more granular error
   // type, could allow the caller to make a decision on what to do if it is not
@@ -485,12 +456,12 @@ fn accept(input: Input, expected_signal: xmlm.Signal) -> Result(Input, String) {
   }
 }
 
-/// `accept_element_start(input, expected_local_name)` inputs the next `Signal` 
-/// if it is an `ElementStart` signal with the given local name.  If that 
+/// `accept_element_start(input, expected_local_name)` inputs the next `Signal`
+/// if it is an `ElementStart` signal with the given local name.  If that
 /// element is not found, return an error.
-/// 
+///
 /// *Note!* The caller must handle the corresponding `ElementEnd` signal.
-/// 
+///
 fn accept_element_start(
   input: Input,
   expected_local_name: String,
@@ -515,13 +486,13 @@ fn accept_element_start(
 
 /// `skip_element_and_any_children(input)` moves past the current element and
 /// any of its children.
-/// 
+///
 /// *Note!*  Be sure to read the docs for xmlm.tree as this uses the same
 /// semantics as that function.
-/// 
+///
 /// *Note!*  If the next signal is an `ElementStart` the corresponding
 /// `ElementEnd` will be handled, and the caller need not handle it.
-/// 
+///
 fn skip_element_and_any_children(input: Input) -> Result(Input, String) {
   case xmlm.tree(input, fn(_, _) { Nil }, fn(_) { Nil }) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
@@ -532,10 +503,10 @@ fn skip_element_and_any_children(input: Input) -> Result(Input, String) {
 /// `skip_element_and_any_children(input, expected_local_name)` moves past the
 /// current element and / any of its children, if the current signal is an
 /// `ElementStart` with a `Tag` that has a matching local name.
-///  
-/// *Note!*  The caller does not need to handle the corresponding ElementEnd 
+///
+/// *Note!*  The caller does not need to handle the corresponding ElementEnd
 /// signal.
-/// 
+///
 fn skip_element_and_any_children_named(
   input: Input,
   with_local_name: String,
@@ -550,12 +521,12 @@ fn skip_element_and_any_children_named(
 }
 
 /// `input_element(input, local_name)` inputs a single element and get its data if it matches the given `local_name`.
-/// 
+///
 /// *Note!*  This function handles the corresponding `ElementEnd` signal.
-/// 
-/// For an alternate way of parsing a simple element, see 
+///
+/// For an alternate way of parsing a simple element, see
 /// `test/examples/person_test.do_input_basic_element`.
-/// 
+///
 fn input_element(input: Input, name: String) -> Result(#(String, Input), String) {
   use input <- result.try(accept_element_start(input, name))
 
@@ -578,12 +549,12 @@ fn input_element(input: Input, name: String) -> Result(#(String, Input), String)
   #(data, input)
 }
 
-/// `input_sequence(input, element_callback)` inputs a sequence of elements with 
+/// `input_sequence(input, element_callback)` inputs a sequence of elements with
 /// the given `element_callback`.
-/// 
+///
 /// *Note!*  The `element_callback` should input a whole element (and possibly
 /// its children), and handle the corresponding `ElementEnd` signal.
-/// 
+///
 fn input_sequence(
   input: Input,
   element_callback: fn(Input) -> Result(#(a, Input), String),
@@ -611,7 +582,7 @@ fn do_input_sequence(
 }
 
 /// `get_attribute_value(attributes, expected_local_name)` attempts to find the attribute with the given local name from a list of `attributes`.
-/// 
+///
 fn get_attribute_value(
   attributes: List(Attribute),
   expected_local_name: String,
@@ -630,11 +601,11 @@ fn get_attribute_value(
 
 /// `skip_to_element_start(input, expected_local_name)` skips to the start of
 /// the first `ElementStart` signal whose `Tag` has the given local name.
-/// 
+///
 /// *Note!*  As written, this function can loop all the way to the end of the
 /// document and hit an unexpected EOI error, so be careful to only call it in
 /// scenarios in which you know that the expected element will be found.
-/// 
+///
 fn skip_to_element_start(
   input: Input,
   expected_local_name: String,
@@ -654,7 +625,7 @@ fn skip_to_element_start(
 
 /// Like `skip_to_element_start` except that the element that the element is
 /// also accepted.
-/// 
+///
 /// *Note!*  The caller must deal with the corresponding `ElementEnd` singal.
 fn skip_to_element_start_then_accept(
   input: Input,
@@ -666,7 +637,7 @@ fn skip_to_element_start_then_accept(
 
 /// `skip_remaining_siblings(input)` skips any remaining siblings at the same
 /// depth as the last parsed `Signal`.
-/// 
+///
 fn skip_remaining_siblings(input: Input) {
   do_skip_remaining_siblings(input, 0)
 }
@@ -675,7 +646,7 @@ fn do_skip_remaining_siblings(input: Input, depth: Int) {
   case xmlm.peek(input), depth {
     Error(e), _ -> Error(xmlm.input_error_to_string(e))
 
-    // if 
+    // if
     Ok(#(ElementEnd, input)), 0 -> Ok(input)
     Ok(#(ElementEnd, input)), depth -> {
       case xmlm.signal(input) {
@@ -808,7 +779,7 @@ type Author {
 }
 
 fn authors_to_string(authors: List(Author), level: Int) -> String {
-  let indent = string.pad_left("", to: level, with: "  ")
+  let indent = string.pad_start("", to: level, with: "  ")
   indent
   <> "(authors\n"
   <> { list.map(authors, author_to_string(_, level + 1)) |> string.join("\n") }
@@ -837,7 +808,7 @@ fn author_to_string(author: Author, level: Int) -> String {
 // =============================================================================
 
 fn indent(level: Int) -> String {
-  string.pad_left("", to: level, with: "  ")
+  string.pad_start("", to: level, with: "  ")
 }
 
 fn ok_exn(a) {
