@@ -5,9 +5,7 @@ import gleam/pair
 import gleam/result
 import gleam/string
 import simplifile
-import xmlm.{
-  type Attribute, type Input, Data, Dtd, ElementEnd, ElementStart, Name, Tag,
-}
+import xmlm
 
 pub fn pubmed_article_set__test() {
   let assert Ok(data) =
@@ -30,8 +28,8 @@ pub fn pubmed_article_set__test() {
 // =============================================================================
 
 fn input_pubmed_article_set(
-  input: Input,
-) -> Result(#(PubmedArticleSet, Input), String) {
+  input: xmlm.Input,
+) -> Result(#(PubmedArticleSet, xmlm.Input), String) {
   use input <- result.try(accept_dtd(input))
 
   use input <- result.try(accept_element_start(input, "PubmedArticleSet"))
@@ -42,12 +40,14 @@ fn input_pubmed_article_set(
   ))
 
   // Eat </PubmedArticleSet>
-  use input <- result.try(accept(input, ElementEnd))
+  use input <- result.try(accept(input, xmlm.ElementEnd))
 
   Ok(#(pubmed_articles, input))
 }
 
-fn input_pubmed_article(input: Input) -> Result(#(PubmedArticle, Input), String) {
+fn input_pubmed_article(
+  input: xmlm.Input,
+) -> Result(#(PubmedArticle, xmlm.Input), String) {
   use input <- result.try(accept_element_start(input, "PubmedArticle"))
   // Note: we can assume this ordering because of the DTD, which must be
   // inspected manually.
@@ -66,7 +66,7 @@ fn input_pubmed_article(input: Input) -> Result(#(PubmedArticle, Input), String)
   use input <- result.try(skip_remaining_siblings(input))
 
   // Eat </Article>
-  use input <- result.try(accept(input, ElementEnd))
+  use input <- result.try(accept(input, xmlm.ElementEnd))
 
   // Skip this element if it exists
   use input <- result.try(skip_element_and_any_children_named(
@@ -75,7 +75,7 @@ fn input_pubmed_article(input: Input) -> Result(#(PubmedArticle, Input), String)
   ))
 
   // Eat </PubmedArticle>
-  use input <- result.try(accept(input, ElementEnd))
+  use input <- result.try(accept(input, xmlm.ElementEnd))
 
   Ok(#(article, input))
 }
@@ -85,10 +85,10 @@ fn input_pubmed_article(input: Input) -> Result(#(PubmedArticle, Input), String)
 /// Note: the caller will need to advance the input to the next starting spot.
 ///
 fn input_article(
-  input: Input,
+  input: xmlm.Input,
   // Will be used to accumulate the state from the element.
   pubmed_article: PubmedArticle,
-) -> Result(#(PubmedArticle, Input), String) {
+) -> Result(#(PubmedArticle, xmlm.Input), String) {
   use input <- result.try(accept_element_start(input, "Article"))
 
   use #(year, input) <- result.try({
@@ -101,7 +101,7 @@ fn input_article(
     use #(year, input) <- result.try(input_pub_date(input))
 
     // Eat </JournalIssue>
-    use input <- result.try(accept(input, ElementEnd))
+    use input <- result.try(accept(input, xmlm.ElementEnd))
 
     // The Journal will optionally have these two at the end.
     use input <- result.try(skip_element_and_any_children_named(input, "Title"))
@@ -111,7 +111,7 @@ fn input_article(
     ))
 
     // Eat </Journal>
-    use input <- result.try(accept(input, ElementEnd))
+    use input <- result.try(accept(input, xmlm.ElementEnd))
 
     Ok(#(year, input))
   })
@@ -122,7 +122,7 @@ fn input_article(
   // Next is `((Pagination, ELocationID*) | ELocationID+)`
   use #(doi, input) <- result.try(case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", "Pagination"), _)), input)) -> {
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "Pagination"), _)), input)) -> {
       // We need to skip over the pagination element
       use input <- result.try(skip_element_and_any_children(input))
 
@@ -130,7 +130,10 @@ fn input_article(
       // must check for it.
       case xmlm.peek(input) {
         Error(e) -> Error(xmlm.input_error_to_string(e))
-        Ok(#(ElementStart(Tag(Name("", "ELocationID"), _)), input)) ->
+        Ok(#(
+          xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "ELocationID"), _)),
+          input,
+        )) ->
           case input_doi(input) {
             Error(e) -> Error(e)
             Ok(#(Some(doi), input)) -> Ok(#(Some(doi), input))
@@ -140,7 +143,7 @@ fn input_article(
       }
     }
 
-    Ok(#(ElementStart(Tag(Name("", "ELocationID"), _)), input)) -> {
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "ELocationID"), _)), input)) -> {
       use #(doi, input) <- result.map(input_doi(input))
       #(doi, input)
     }
@@ -158,7 +161,7 @@ fn input_article(
   use input <- result.try(skip_remaining_siblings(input))
 
   // Eat </Article>
-  use input <- result.try(accept(input, ElementEnd))
+  use input <- result.try(accept(input, xmlm.ElementEnd))
 
   Ok(#(
     PubmedArticle(
@@ -173,7 +176,7 @@ fn input_article(
   ))
 }
 
-fn input_pub_date(input: Input) -> Result(#(String, Input), String) {
+fn input_pub_date(input: xmlm.Input) -> Result(#(String, xmlm.Input), String) {
   case accept_element_start(input, "PubDate") {
     Error(e) -> Error(e)
     Ok(input) -> do_input_pub_date(input, 0, "")
@@ -182,34 +185,36 @@ fn input_pub_date(input: Input) -> Result(#(String, Input), String) {
 
 // We are required to have at least one of Year or MedlineDate.
 fn do_input_pub_date(
-  input: Input,
+  input: xmlm.Input,
   depth: Int,
   date: String,
-) -> Result(#(String, Input), String) {
+) -> Result(#(String, xmlm.Input), String) {
   case xmlm.signal(input), depth {
     Error(e), _ -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementEnd, input)), 0 -> Ok(#(date, input))
+    Ok(#(xmlm.ElementEnd, input)), 0 -> Ok(#(date, input))
 
-    Ok(#(ElementEnd, input)), depth -> {
+    Ok(#(xmlm.ElementEnd, input)), depth -> {
       // We still need to get to the closing PubDate tag.
       do_input_pub_date(input, depth - 1, date)
     }
-    Ok(#(ElementStart(Tag(Name("", "Year"), _)), input)), depth
-    | Ok(#(ElementStart(Tag(Name("", "MedlineDate"), _)), input)), depth
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "Year"), _)), input)), depth
+    | Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "MedlineDate"), _)), input)),
+      depth
     -> {
       // We found the date we are looking for, so now get the data (data is
       // required here).
       case xmlm.signal(input) {
         Error(e) -> Error(xmlm.input_error_to_string(e))
-        Ok(#(Data(date), input)) -> do_input_pub_date(input, depth + 1, date)
+        Ok(#(xmlm.Data(date), input)) ->
+          do_input_pub_date(input, depth + 1, date)
         Ok(#(signal, _)) ->
           Error("expected Data but got " <> string.inspect(signal))
       }
     }
-    Ok(#(ElementStart(_), input)), depth ->
+    Ok(#(xmlm.ElementStart(_), input)), depth ->
       do_input_pub_date(input, depth + 1, date)
-    Ok(#(Data(_), input)), depth -> do_input_pub_date(input, depth, date)
-    Ok(#(Dtd(_), _)), _ -> Error("unexpected Dtd signal")
+    Ok(#(xmlm.Data(_), input)), depth -> do_input_pub_date(input, depth, date)
+    Ok(#(xmlm.Dtd(_), _)), _ -> Error("unexpected Dtd signal")
   }
 }
 
@@ -219,10 +224,13 @@ fn do_input_pub_date(
 // There *probably* won't be multiple ELocationId tags with the doi type, but we
 // won't be checking for that. If there are more than one, we are taking the
 // first one that we find.
-fn input_doi(input: Input) -> Result(#(Option(String), Input), String) {
+fn input_doi(input: xmlm.Input) -> Result(#(Option(String), xmlm.Input), String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", "ELocationID"), attributes)), input)) -> {
+    Ok(#(
+      xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "ELocationID"), attributes)),
+      input,
+    )) -> {
       case get_attribute_value(attributes, "EIdType") {
         Ok("doi") -> {
           use #(doi, input) <- result.map(input_element(input, "ELocationID"))
@@ -242,10 +250,12 @@ fn input_doi(input: Input) -> Result(#(Option(String), Input), String) {
   }
 }
 
-fn input_abstract(input: Input) -> Result(#(Option(String), Input), String) {
+fn input_abstract(
+  input: xmlm.Input,
+) -> Result(#(Option(String), xmlm.Input), String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", "Abstract"), _)), input)) -> {
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "Abstract"), _)), input)) -> {
       use input <- result.try(accept_element_start(input, "Abstract"))
 
       use #(abstract_texts, input) <- result.try(input_abstract_text_sequence(
@@ -259,7 +269,7 @@ fn input_abstract(input: Input) -> Result(#(Option(String), Input), String) {
       ))
 
       // Eat </Abstract>
-      use input <- result.try(accept(input, ElementEnd))
+      use input <- result.try(accept(input, xmlm.ElementEnd))
 
       let abstract = string.join(abstract_texts, " ")
       Ok(#(Some(abstract), input))
@@ -269,18 +279,18 @@ fn input_abstract(input: Input) -> Result(#(Option(String), Input), String) {
 }
 
 fn input_abstract_text_sequence(
-  input: Input,
-) -> Result(#(List(String), Input), String) {
+  input: xmlm.Input,
+) -> Result(#(List(String), xmlm.Input), String) {
   do_input_abstract_text_sequence(input, [])
 }
 
 fn do_input_abstract_text_sequence(
-  input: Input,
+  input: xmlm.Input,
   abstract_texts: List(String),
-) -> Result(#(List(String), Input), String) {
+) -> Result(#(List(String), xmlm.Input), String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", "AbstractText"), _)), input)) -> {
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "AbstractText"), _)), input)) -> {
       case input_element(input, "AbstractText") {
         Error(e) -> Error(e)
         Ok(#(abstract_text, input)) ->
@@ -292,35 +302,42 @@ fn do_input_abstract_text_sequence(
     }
     // If you hit a CopyrightInformation or and End tag, then the sequence is
     // over.
-    Ok(#(ElementStart(Tag(Name("", "CopyrightInformation"), _)), input))
-    | Ok(#(ElementEnd, input)) -> {
+    Ok(#(
+      xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "CopyrightInformation"), _)),
+      input,
+    ))
+    | Ok(#(xmlm.ElementEnd, input)) -> {
       Ok(#(list.reverse(abstract_texts), input))
     }
     Ok(#(signal, _)) -> Error("unexpected signal: " <> string.inspect(signal))
   }
 }
 
-fn input_author_list(input: Input) -> Result(#(List(Author), Input), String) {
+fn input_author_list(
+  input: xmlm.Input,
+) -> Result(#(List(Author), xmlm.Input), String) {
   // AuthorList has an attribute that says whether it is complete or not, but we
   // will ignore it here.
   use input <- result.try(accept_element_start(input, "AuthorList"))
   use #(authors, input) <- result.try(input_author_sequence(input))
-  use input <- result.map(accept(input, ElementEnd))
+  use input <- result.map(accept(input, xmlm.ElementEnd))
   #(authors, input)
 }
 
-fn input_author_sequence(input: Input) -> Result(#(List(Author), Input), String) {
+fn input_author_sequence(
+  input: xmlm.Input,
+) -> Result(#(List(Author), xmlm.Input), String) {
   do_author_sequence(input, [])
 }
 
 // TODO: convert this to not use try in the recursive section.
 fn do_author_sequence(
-  input: Input,
+  input: xmlm.Input,
   authors: List(Author),
-) -> Result(#(List(Author), Input), String) {
+) -> Result(#(List(Author), xmlm.Input), String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", "Author"), _)), input)) -> {
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "Author"), _)), input)) -> {
       use input <- result.try(accept_element_start(input, "Author"))
       use #(name, input) <- result.try(input_author_name(input))
       // Identifier is optional, so you can't just skip to the next one.
@@ -329,12 +346,12 @@ fn do_author_sequence(
       use input <- result.try(skip_remaining_siblings(input))
 
       // Eat </Author>
-      use input <- result.try(accept(input, ElementEnd))
+      use input <- result.try(accept(input, xmlm.ElementEnd))
 
       let author = Author(name, orcid)
       do_author_sequence(input, [author, ..authors])
     }
-    Ok(#(ElementEnd, input)) -> {
+    Ok(#(xmlm.ElementEnd, input)) -> {
       Ok(#(list.reverse(authors), input))
     }
     Ok(#(signal, _)) -> Error("unexpected signal: " <> string.inspect(signal))
@@ -343,10 +360,10 @@ fn do_author_sequence(
 
 /// Next tags should be either `Identifier` or `AffiliationInfo` or the next
 /// `Author`
-fn input_author_name(input: Input) -> Result(#(String, Input), String) {
+fn input_author_name(input: xmlm.Input) -> Result(#(String, xmlm.Input), String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", "LastName"), _)), input)) -> {
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "LastName"), _)), input)) -> {
       use #(name, input) <- result.try(input_element(input, "LastName"))
       use input <- result.try(skip_element_and_any_children_named(
         input,
@@ -362,7 +379,7 @@ fn input_author_name(input: Input) -> Result(#(String, Input), String) {
       ))
       Ok(#(name, input))
     }
-    Ok(#(ElementStart(Tag(Name("", "CollectiveName"), _)), input)) ->
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "CollectiveName"), _)), input)) ->
       input_element(input, "CollectiveName")
     Ok(#(signal, _)) ->
       Error(
@@ -378,10 +395,15 @@ fn input_author_name(input: Input) -> Result(#(String, Input), String) {
 //
 // If by some chance there are multiple Identifiers with Source="ORCID", we
 // aren't checking for it. Rather we're just taking the first one we find.
-fn input_orcid(input: Input) -> Result(#(Option(String), Input), String) {
+fn input_orcid(
+  input: xmlm.Input,
+) -> Result(#(Option(String), xmlm.Input), String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", "Identifier"), attributes)), input)) -> {
+    Ok(#(
+      xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "Identifier"), attributes)),
+      input,
+    )) -> {
       // Check if there is the correct source on this identifier.  Source is a
       // required attribute but it's value may not be what we expect.
       case get_attribute_value(attributes, "Source") {
@@ -400,8 +422,11 @@ fn input_orcid(input: Input) -> Result(#(Option(String), Input), String) {
     }
     // AffiliationInfo may follow any identifiers, so if we are here then we're
     // done.
-    Ok(#(ElementStart(Tag(Name("", "AffiliationInfo"), _)), input))
-    | Ok(#(ElementEnd, input)) -> Ok(#(None, input))
+    Ok(#(
+      xmlm.ElementStart(xmlm.Tag(xmlm.Name("", "AffiliationInfo"), _)),
+      input,
+    ))
+    | Ok(#(xmlm.ElementEnd, input)) -> Ok(#(None, input))
     Ok(#(signal, _)) ->
       Error(
         "expected ElementStart with Identifier or AffiliationInfo, or an ElementEnd.  Got "
@@ -422,7 +447,7 @@ fn input_orcid(input: Input) -> Result(#(Option(String), Input), String) {
 /// *Note!* `Dtd` signals don't have corresponding `ElementEnd` signals, so the
 /// caller need not address it.
 ///
-fn accept_dtd(input: Input) -> Result(Input, String) {
+fn accept_dtd(input: xmlm.Input) -> Result(xmlm.Input, String) {
   case xmlm.signal(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
     Ok(#(xmlm.Dtd(_), input)) -> Ok(input)
@@ -439,7 +464,10 @@ fn accept_dtd(input: Input) -> Result(Input, String) {
 /// *Note!*  If accepting and `ElementStart` signal, then the caller must handle
 /// the corresponding `ElementEnd` signal.
 ///
-fn accept(input: Input, expected_signal: xmlm.Signal) -> Result(Input, String) {
+fn accept(
+  input: xmlm.Input,
+  expected_signal: xmlm.Signal,
+) -> Result(xmlm.Input, String) {
   // Using `peek` here rather than `signal` along with a more granular error
   // type, could allow the caller to make a decision on what to do if it is not
   // the expected signal.  But we won't deal with that for this example.
@@ -463,15 +491,15 @@ fn accept(input: Input, expected_signal: xmlm.Signal) -> Result(Input, String) {
 /// *Note!* The caller must handle the corresponding `ElementEnd` signal.
 ///
 fn accept_element_start(
-  input: Input,
+  input: xmlm.Input,
   expected_local_name: String,
-) -> Result(Input, String) {
+) -> Result(xmlm.Input, String) {
   // Using `peek` here rather than `signal` along with a more granular error
   // type, could allow the caller to make a decision on what to do if it is not
   // the expected signal.  But we won't deal with that for this example.
   case xmlm.signal(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", local_name), _)), input))
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", local_name), _)), input))
       if local_name == expected_local_name
     -> Ok(input)
     Ok(#(signal, _)) ->
@@ -493,7 +521,9 @@ fn accept_element_start(
 /// *Note!*  If the next signal is an `ElementStart` the corresponding
 /// `ElementEnd` will be handled, and the caller need not handle it.
 ///
-fn skip_element_and_any_children(input: Input) -> Result(Input, String) {
+fn skip_element_and_any_children(
+  input: xmlm.Input,
+) -> Result(xmlm.Input, String) {
   case xmlm.tree(input, fn(_, _) { Nil }, fn(_) { Nil }) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
     Ok(#(Nil, input)) -> Ok(input)
@@ -508,12 +538,12 @@ fn skip_element_and_any_children(input: Input) -> Result(Input, String) {
 /// signal.
 ///
 fn skip_element_and_any_children_named(
-  input: Input,
+  input: xmlm.Input,
   with_local_name: String,
-) -> Result(Input, String) {
+) -> Result(xmlm.Input, String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", local_name), _)), input))
+    Ok(#(xmlm.ElementStart(xmlm.Tag(xmlm.Name("", local_name), _)), input))
       if local_name == with_local_name
     -> skip_element_and_any_children(input)
     Ok(#(_, input)) -> Ok(input)
@@ -527,7 +557,10 @@ fn skip_element_and_any_children_named(
 /// For an alternate way of parsing a simple element, see
 /// `test/examples/person_test.do_input_basic_element`.
 ///
-fn input_element(input: Input, name: String) -> Result(#(String, Input), String) {
+fn input_element(
+  input: xmlm.Input,
+  name: String,
+) -> Result(#(String, xmlm.Input), String) {
   use input <- result.try(accept_element_start(input, name))
 
   use #(signal, input) <- result.try(
@@ -541,11 +574,11 @@ fn input_element(input: Input, name: String) -> Result(#(String, Input), String)
       )
       Ok(#(data, input))
     }
-    ElementEnd -> Ok(#("", input))
-    ElementStart(_) | xmlm.Dtd(_) ->
+    xmlm.ElementEnd -> Ok(#("", input))
+    xmlm.ElementStart(_) | xmlm.Dtd(_) ->
       Error("parse error: expected Data or ElementEnd")
   })
-  use input <- result.map(accept(input, ElementEnd))
+  use input <- result.map(accept(input, xmlm.ElementEnd))
   #(data, input)
 }
 
@@ -556,40 +589,41 @@ fn input_element(input: Input, name: String) -> Result(#(String, Input), String)
 /// its children), and handle the corresponding `ElementEnd` signal.
 ///
 fn input_sequence(
-  input: Input,
-  element_callback: fn(Input) -> Result(#(a, Input), String),
-) -> Result(#(List(a), Input), String) {
+  input: xmlm.Input,
+  element_callback: fn(xmlm.Input) -> Result(#(a, xmlm.Input), String),
+) -> Result(#(List(a), xmlm.Input), String) {
   do_input_sequence(input, element_callback, [])
 }
 
 fn do_input_sequence(
-  input: Input,
-  element_callback: fn(Input) -> Result(#(a, Input), String),
+  input: xmlm.Input,
+  element_callback: fn(xmlm.Input) -> Result(#(a, xmlm.Input), String),
   acc: List(a),
-) -> Result(#(List(a), Input), String) {
+) -> Result(#(List(a), xmlm.Input), String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(_), input)) -> {
+    Ok(#(xmlm.ElementStart(_), input)) -> {
       case element_callback(input) {
         Error(e) -> Error(e)
         Ok(#(a, input)) ->
           do_input_sequence(input, element_callback, [a, ..acc])
       }
     }
-    Ok(#(ElementEnd, input)) -> Ok(#(list.reverse(acc), input))
+    Ok(#(xmlm.ElementEnd, input)) -> Ok(#(list.reverse(acc), input))
     Ok(#(_, _)) -> Error("expected either ElementStart or ElementEnd")
   }
 }
 
-/// `get_attribute_value(attributes, expected_local_name)` attempts to find the attribute with the given local name from a list of `attributes`.
+/// `get_attribute_value(attributes, expected_local_name)` attempts to find the
+/// attribute with the given local name from a list of `attributes`.
 ///
 fn get_attribute_value(
-  attributes: List(Attribute),
+  attributes: List(xmlm.Attribute),
   expected_local_name: String,
 ) -> Result(String, String) {
-  use xmlm.Attribute(Name(_, _), value) <- result.map(
+  use xmlm.Attribute(xmlm.Name(_, _), value) <- result.map(
     list.find(attributes, fn(attribute) {
-      let xmlm.Attribute(Name(_, local_name), _) = attribute
+      let xmlm.Attribute(xmlm.Name(_, local_name), _) = attribute
       local_name == expected_local_name
     })
     |> result.replace_error(
@@ -607,12 +641,15 @@ fn get_attribute_value(
 /// scenarios in which you know that the expected element will be found.
 ///
 fn skip_to_element_start(
-  input: Input,
+  input: xmlm.Input,
   expected_local_name: String,
-) -> Result(Input, String) {
+) -> Result(xmlm.Input, String) {
   case xmlm.peek(input) {
     Error(e) -> Error(xmlm.input_error_to_string(e))
-    Ok(#(ElementStart(Tag(Name("", local_name), attributes: _)), input))
+    Ok(#(
+      xmlm.ElementStart(xmlm.Tag(xmlm.Name("", local_name), attributes: _)),
+      input,
+    ))
       if local_name == expected_local_name
     -> Ok(input)
     Ok(#(_, input)) ->
@@ -628,9 +665,9 @@ fn skip_to_element_start(
 ///
 /// *Note!*  The caller must deal with the corresponding `ElementEnd` singal.
 fn skip_to_element_start_then_accept(
-  input: Input,
+  input: xmlm.Input,
   expected_local_name: String,
-) -> Result(Input, String) {
+) -> Result(xmlm.Input, String) {
   use input <- result.try(skip_to_element_start(input, expected_local_name))
   accept_element_start(input, expected_local_name)
 }
@@ -638,35 +675,35 @@ fn skip_to_element_start_then_accept(
 /// `skip_remaining_siblings(input)` skips any remaining siblings at the same
 /// depth as the last parsed `Signal`.
 ///
-fn skip_remaining_siblings(input: Input) {
+fn skip_remaining_siblings(input: xmlm.Input) {
   do_skip_remaining_siblings(input, 0)
 }
 
-fn do_skip_remaining_siblings(input: Input, depth: Int) {
+fn do_skip_remaining_siblings(input: xmlm.Input, depth: Int) {
   case xmlm.peek(input), depth {
     Error(e), _ -> Error(xmlm.input_error_to_string(e))
 
     // if
-    Ok(#(ElementEnd, input)), 0 -> Ok(input)
-    Ok(#(ElementEnd, input)), depth -> {
+    Ok(#(xmlm.ElementEnd, input)), 0 -> Ok(input)
+    Ok(#(xmlm.ElementEnd, input)), depth -> {
       case xmlm.signal(input) {
         Error(e) -> Error(xmlm.input_error_to_string(e))
         Ok(#(_, input)) -> do_skip_remaining_siblings(input, depth - 1)
       }
     }
-    Ok(#(ElementStart(_), input)), depth -> {
+    Ok(#(xmlm.ElementStart(_), input)), depth -> {
       case xmlm.signal(input) {
         Error(e) -> Error(xmlm.input_error_to_string(e))
         Ok(#(_, input)) -> do_skip_remaining_siblings(input, depth + 1)
       }
     }
-    Ok(#(Data(_), input)), depth -> {
+    Ok(#(xmlm.Data(_), input)), depth -> {
       case xmlm.signal(input) {
         Error(e) -> Error(xmlm.input_error_to_string(e))
         Ok(#(_, input)) -> do_skip_remaining_siblings(input, depth)
       }
     }
-    Ok(#(Dtd(_), _)), _ -> Error("unexpected Dtd signal")
+    Ok(#(xmlm.Dtd(_), _)), _ -> Error("unexpected Dtd signal")
   }
 }
 
