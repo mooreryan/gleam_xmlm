@@ -106,6 +106,12 @@ bench_signals_javascript: mk_output_dir build_javascript
 
     gleam run --target=javascript -m bench/bench_signals -- test/test_files/33397721.xml
 
+bench_peek_vs_signal:
+    #!/usr/bin/env bash
+    set -euxo pipefail
+
+    gleam run --target=javascript -m bench/bench_peek_vs_signal -- test/test_files/snack.UTF8.xml
+
 erlgrind: mk_output_dir
     #!/usr/bin/env bash
     set -euxo pipefail
