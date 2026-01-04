@@ -1,12 +1,12 @@
-//// For usage examples and strategies for working with this library, check out 
+//// For usage examples and strategies for working with this library, check out
 //// the programs located in the `test/examples` directory.
-//// 
+////
 //// ## Notes
-//// 
-//// - Don't forget to work with the `Input` that is returned by any 
+////
+//// - Don't forget to work with the `Input` that is returned by any
 ////   "inputting" function rather than the original.
-//// - If something is marked as being "unspecified", do not depend on it.  
-////   It may change at any time without a major version bump.  This mainly 
+//// - If something is marked as being "unspecified", do not depend on it.
+////   It may change at any time without a major version bump.  This mainly
 ////   applies to the various `*_to_string` functions.
 ////
 
@@ -26,73 +26,73 @@ const u_start_doc = 9_007_199_254_740_990
 
 const u_end_doc = 9_007_199_254_740_989
 
-/// newline 
+/// newline
 const u_nl: Int = 0x000A
 
-/// carriage return 
+/// carriage return
 const u_cr: Int = 0x000D
 
-/// space 
+/// space
 const u_space: Int = 0x0020
 
-/// quote 
+/// quote
 const u_quot: Int = 0x0022
 
-/// # 
+/// #
 const u_sharp: Int = 0x0023
 
-/// & 
+/// &
 const u_amp: Int = 0x0026
 
-/// ' 
+/// '
 const u_apos: Int = 0x0027
 
-/// - 
+/// -
 const u_minus: Int = 0x002D
 
-/// / 
+/// /
 const u_slash: Int = 0x002F
 
-/// : 
+/// :
 const u_colon: Int = 0x003A
 
-/// ; 
+/// ;
 const u_scolon: Int = 0x003B
 
-/// < 
+/// <
 const u_lt: Int = 0x003C
 
-///: Int = 
+///: Int =
 const u_eq: Int = 0x003D
 
-/// > 
+/// >
 const u_gt: Int = 0x003E
 
-/// ? 
+/// ?
 const u_qmark: Int = 0x003F
 
-/// ! 
+/// !
 const u_emark: Int = 0x0021
 
-/// [ 
+/// [
 const u_lbrack: Int = 0x005B
 
-/// ] 
+/// ]
 const u_rbrack: Int = 0x005D
 
-/// x 
+/// x
 const u_x: Int = 0x0078
 
-/// BOM 
+/// BOM
 const u_bom: Int = 0xFEFF
 
-/// 9 
+/// 9
 const u_9: Int = 0x0039
 
-/// F 
+/// F
 const u_cap_f: Int = 0x0046
 
-/// D 
+/// D
 const u_cap_d: Int = 0x0044
 
 const s_cdata: String = "CDATA["
@@ -142,7 +142,7 @@ const v_us_ascii: String = "us-ascii"
 const v_ascii: String = "ascii"
 
 // =============================================================================
-// Unicode character lexers 
+// Unicode character lexers
 // =============================================================================
 
 @internal
@@ -205,23 +205,23 @@ fn uchar_iso_8859_15(
   stream: InputStream,
 ) -> Result(#(Int, InputStream), UnicodeLexerError) {
   case stream {
-    // € 
+    // €
     [0x00A4, ..rest] -> Ok(#(0x20AC, rest))
-    // Š 
+    // Š
     [0x00A6, ..rest] -> Ok(#(0x0160, rest))
-    // š 
+    // š
     [0x00A8, ..rest] -> Ok(#(0x0161, rest))
-    // Ž 
+    // Ž
     [0x00B4, ..rest] -> Ok(#(0x017D, rest))
-    // ž 
+    // ž
     [0x00B8, ..rest] -> Ok(#(0x017E, rest))
-    // Œ 
+    // Œ
     [0x00BC, ..rest] -> Ok(#(0x0152, rest))
-    // œ 
+    // œ
     [0x00BD, ..rest] -> Ok(#(0x0153, rest))
-    // Ÿ 
+    // Ÿ
     [0x00BE, ..rest] -> Ok(#(0x0178, rest))
-    // Other 
+    // Other
     [char, ..rest] -> Ok(#(char, rest))
     // Empty stream
     [] -> Error(UnicodeLexerEoi)
@@ -466,25 +466,25 @@ fn uchar_ascii(
 }
 
 // =============================================================================
-// Basic types and values 
+// Basic types and values
 // =============================================================================
 
 /// The type for character encodings
-/// 
+///
 pub type Encoding {
   Utf8
 
   /// UTF-16 endianness is determined from the
   /// [BOM](https://www.unicode.org/faq/utf_bom.html#BOM).
-  /// 
+  ///
   Utf16
 
   /// UTF-16 big-endian
-  /// 
+  ///
   Utf16Be
 
   /// UTF-16 big-endian
-  /// 
+  ///
   Utf16Le
 
   Iso8859x1
@@ -493,49 +493,49 @@ pub type Encoding {
 }
 
 /// Type for names of attribute and elements.  An empty `uri` represents a
-/// name without a namespace, i.e., an unprefixed name that is not under the 
+/// name without a namespace, i.e., an unprefixed name that is not under the
 /// scope of a default namespace.
-/// 
+///
 pub type Name {
   Name(
     // NOTE! Internally the URI is actually still a prefix for much of the code
     // until it is mapped.
 
-    /// The URI of the `Name`.  
-    /// 
-    /// Note that this likely* will not be the literal value of the prefix 
+    /// The URI of the `Name`.
+    ///
+    /// Note that this likely* will not be the literal value of the prefix
     /// string before the `:`.  E.g.,
-    /// 
+    ///
     /// ```xml
     /// <a xmlns:snazzy="https://www.example.com/snazzy">
     ///   <snazzy:b />
     /// </a>
     /// ```
-    /// 
+    ///
     /// The `b` tag would look something like this:
-    /// 
+    ///
     /// ```gleam
     /// Tag(
-    ///   name: Name(uri: "https://www.example.com/snazzy", local: "b"), 
+    ///   name: Name(uri: "https://www.example.com/snazzy", local: "b"),
     ///   attributes: []
     /// )
     /// ```
-    /// 
-    /// Note how the `uri` is not `"snazzy"`, but 
+    ///
+    /// Note how the `uri` is not `"snazzy"`, but
     /// `"https://www.example.com/snazzy"`.
-    /// 
-    /// *I say "likely", because you could define a `namespace_callback` that 
+    ///
+    /// *I say "likely", because you could define a `namespace_callback` that
     /// maps URIs to themselves rather than a URI.
-    /// 
+    ///
     uri: String,
     /// The non-prefixed (i.e., `local`) part of the `Name`.
-    /// 
+    ///
     local: String,
   )
 }
 
 /// Convert `name` into an unspecified string representation.
-/// 
+///
 pub fn name_to_string(name: Name) -> String {
   let Name(uri, local) = name
   case uri {
@@ -545,16 +545,16 @@ pub fn name_to_string(name: Name) -> String {
 }
 
 /// Type for attributes.
-/// 
+///
 /// ## Example
-/// 
-/// In following XML fragment `<fruit color="green">`, the attribute 
-/// `color="green"` would look like this: 
-/// 
+///
+/// In following XML fragment `<fruit color="green">`, the attribute
+/// `color="green"` would look like this:
+///
 /// ```gleam
 /// Attribute(name: Name(uri: "", local: "color"), value: "green")
 /// ```
-/// 
+///
 pub type Attribute {
   Attribute(
     /// The `name` of the `Attribute`
@@ -565,7 +565,7 @@ pub type Attribute {
 }
 
 /// Convert `attribute` into an unspecified string representation.
-/// 
+///
 pub fn attribute_to_string(attribute: Attribute) -> String {
   "Attribute(name: "
   <> name_to_string(attribute.name)
@@ -575,7 +575,7 @@ pub fn attribute_to_string(attribute: Attribute) -> String {
 }
 
 /// Convert `attributes` into an unspecified string representation.
-/// 
+///
 pub fn attributes_to_string(attributes: List(Attribute)) -> String {
   case attributes {
     [] -> "[]"
@@ -585,20 +585,20 @@ pub fn attributes_to_string(attributes: List(Attribute)) -> String {
 }
 
 /// The type for an element tag.
-/// 
+///
 pub type Tag {
   Tag(
     /// Name of the tag
-    /// 
+    ///
     name: Name,
     /// Attribute list of the tag
-    /// 
+    ///
     attributes: List(Attribute),
   )
 }
 
 /// Convert `tag` into an unspecified string representation.
-/// 
+///
 pub fn tag_to_string(tag: Tag) -> String {
   "Tag(name: "
   <> name_to_string(tag.name)
@@ -608,23 +608,23 @@ pub fn tag_to_string(tag: Tag) -> String {
 }
 
 /// The type for signals
-/// 
-/// A well-formed sequence of signals belongs to the language of the document 
+///
+/// A well-formed sequence of signals belongs to the language of the document
 /// grammar:
-/// 
+///
 /// ```
 /// document := Dtd tree ;
 /// tree     := ElementStart child ElementEnd ;
 /// child    := ( Data trees ) | trees ;
 /// trees    := ( tree child ) | epsilon ;
 /// ```
-/// 
-/// Note the `trees` production which expresses the fact there there will never 
+///
+/// Note the `trees` production which expresses the fact there there will never
 /// be two consecutive `Data` signals in the children of an element.
-/// 
-/// The `Input` type and functions that work with it deal only with well-formed 
+///
+/// The `Input` type and functions that work with it deal only with well-formed
 /// signal sequences, else `Errors` are returned.
-/// 
+///
 pub type Signal {
   Dtd(Option(String))
   ElementStart(Tag)
@@ -633,7 +633,7 @@ pub type Signal {
 }
 
 /// Convert `signal` into an unspecified string representation.
-/// 
+///
 pub fn signal_to_string(signal: Signal) -> String {
   case signal {
     Dtd(Some(data)) -> "Dtd(" <> data <> ")"
@@ -645,7 +645,7 @@ pub fn signal_to_string(signal: Signal) -> String {
 }
 
 /// Convert `signals` into an unspecified string representation.
-/// 
+///
 pub fn signals_to_string(signals: List(Signal)) -> String {
   string.join(list.map(signals, signal_to_string), "\n")
 }
@@ -659,13 +659,13 @@ fn signal_start_stream() {
 // =============================================================================
 
 /// The type for error positions
-/// 
+///
 type Position {
   Position(line: Int, column: Int)
 }
 
 /// Convert `position` into an unspecified string representation.
-/// 
+///
 fn position_to_string(position: Position) -> String {
   "Position(line: "
   <> int.to_string(position.line)
@@ -726,7 +726,7 @@ fn internal_error_message(input_error: InternalInputError) -> String {
     UnknownEntityRef(msg) -> bracket("unknown entity reference (", msg, ")")
     UnknownNsPrefix(msg) -> bracket("unknown namespace prefix (", msg, ")")
 
-    // New 
+    // New
     UnicodeLexerErrorEoi -> "unicode lexer error eoi"
     UnicodeLexerErrorMalformed -> "unicode lexer error malformed"
     InvalidArgument(msg) -> bracket("invalid argument (", msg, ")")
@@ -735,7 +735,7 @@ fn internal_error_message(input_error: InternalInputError) -> String {
 
 // Note: this in an exception in the ocaml code
 /// The type of error returned by any "inputing" functions.
-/// 
+///
 pub opaque type InputError {
   InputError(Position, InternalInputError)
 }
@@ -745,7 +745,7 @@ fn input_error_new(input: Input, input_error: InternalInputError) -> InputError 
 }
 
 /// Converts the `input_error` into a non-specified human readable format.
-/// 
+///
 pub fn input_error_to_string(input_error: InputError) -> String {
   let InputError(position, input_error) = input_error
   "ERROR "
@@ -784,7 +784,7 @@ type InputStream =
 pub fn input_stream_from_bit_array(bit_array: BitArray) -> List(Int)
 
 /// The type for input abstractions.
-/// 
+///
 pub opaque type Input {
   Input(
     /// Expected encoding
@@ -793,7 +793,7 @@ pub opaque type Input {
     strip: Bool,
     /// Namespace callback.
     namespace_callback: fn(String) -> Option(String),
-    /// Entity reference callback 
+    /// Entity reference callback
     entity_callback: fn(String) -> Option(String),
     /// Unicode character lexer
     uchar: fn(Input) -> Result(#(Int, Input), InputError),
@@ -809,11 +809,11 @@ pub opaque type Input {
     column: Int,
     /// Last parsed limit
     limit: Limit,
-    /// Signal lookahead 
+    /// Signal lookahead
     peek: Signal,
     /// True if stripping whitespace
     stripping: Bool,
-    /// True if last char was white 
+    /// True if last char was white
     last_whitespace: Bool,
     /// Stack of qualified el. name, bound prefixes and strip behaviour
     scopes: List(#(Name, List(String), Bool)),
@@ -827,7 +827,7 @@ pub opaque type Input {
 }
 
 /// Convert `input` into an unspecified string representation.
-/// 
+///
 pub fn input_to_string(input: Input) -> String {
   "Input(\n\tencoding: "
   <> string.inspect(input.encoding)
@@ -888,14 +888,14 @@ fn error_expected_chars(
 
 /// `xmlm.from_string(source)` returns a new `Input` abstraction from the given
 /// `source`.
-/// 
+///
 pub fn from_string(source: String) -> Input {
   from_bit_array(bit_array.from_string(source))
 }
 
-/// `xmlm.from_bit_array(source)` returns a new `Input` abstraction from the 
+/// `xmlm.from_bit_array(source)` returns a new `Input` abstraction from the
 /// given `source`.
-/// 
+///
 pub fn from_bit_array(source: BitArray) -> Input {
   let bindings =
     dict.new()
@@ -926,45 +926,45 @@ pub fn from_bit_array(source: BitArray) -> Input {
 }
 
 /// `xmlm.with_encoding(input)` sets the `input` to use the given `encoding`.
-/// 
+///
 pub fn with_encoding(input: Input, encoding: Encoding) -> Input {
   Input(..input, encoding: Some(encoding))
 }
 
 /// `xmlm.with_stripping(input, stripping)` sets the `input` to use the given
 /// `stripping`.
-/// 
+///
 pub fn with_stripping(input: Input, stripping: Bool) -> Input {
   Input(..input, stripping: stripping)
 }
 
-/// `xmlm.with_namespace_callback(input, namespace_callback)` sets the `input` 
+/// `xmlm.with_namespace_callback(input, namespace_callback)` sets the `input`
 /// to use the given `namespace_callback` to bind undeclared namespace prefixes.
-/// 
+///
 /// ## Example
-/// 
+///
 /// Imagine an XML document something like this, that specifies a namespace.
-/// 
+///
 /// ```xml
 /// <a xmlns:snazzy="https://www.example.com/snazzy">
 ///   <snazzy:b />
 /// </a>
 /// ```
-/// 
-/// This will parse Ok because the namespace is properly declared.  
-/// 
-/// However, the following XML document would give an error, telling you about 
+///
+/// This will parse Ok because the namespace is properly declared.
+///
+/// However, the following XML document would give an error, telling you about
 /// the unknown namespace prefix `snazzy`.
-/// 
+///
 /// ```xml
 /// <a>
 ///   <snazzy:b />
 /// </a>
 /// ```
-/// 
-/// To address this, you may provide a function to bind undeclared namespace 
+///
+/// To address this, you may provide a function to bind undeclared namespace
 /// prefixes.
-/// 
+///
 /// ```gleam
 /// xmlm.from_string(xml_data)
 /// |> xmlm.with_namespace_callback(fn(prefix) {
@@ -974,9 +974,9 @@ pub fn with_stripping(input: Input, stripping: Bool) -> Input {
 ///   }
 /// })
 /// ```
-/// 
+///
 /// In this way, the `snazzy` prefix will be bound and no error will occur.
-/// 
+///
 pub fn with_namespace_callback(
   input: Input,
   namespace_callback: fn(String) -> Option(String),
@@ -984,21 +984,21 @@ pub fn with_namespace_callback(
   Input(..input, namespace_callback: namespace_callback)
 }
 
-/// `xmlm.with_entity_callback(input, namespace_callback)` sets the `input` to 
+/// `xmlm.with_entity_callback(input, namespace_callback)` sets the `input` to
 /// use the given `entity_callback` to resolve non-predefined entity references.
-/// 
+///
 /// ## Example
-/// 
+///
 /// Imagine an XML document that looks something like this:
-/// 
+///
 /// ```xml
 /// <p> &apple; &pie; </p>
 /// ```
-/// 
-/// It has non-predifined entity references, and so when parsing, it will give 
-/// an error.  To address this, we could use an entity callback function to 
+///
+/// It has non-predifined entity references, and so when parsing, it will give
+/// an error.  To address this, we could use an entity callback function to
 /// resolve these references.
-/// 
+///
 /// ```gleam
 /// xmlm.from_string(xml_data)
 /// |> xmlm.with_entity_callback(fn(entity_reference) {
@@ -1009,14 +1009,14 @@ pub fn with_namespace_callback(
 ///   }
 /// })
 /// ```
-/// 
-/// With that entity callback, the parsed `Data` signal would look something 
+///
+/// With that entity callback, the parsed `Data` signal would look something
 /// like this:
-/// 
+///
 /// ```gleam
 /// Data("APPLE! PIE!")
 /// ```
-/// 
+///
 pub fn with_entity_callback(
   input: Input,
   entity_callback: fn(String) -> Option(String),
@@ -1107,15 +1107,15 @@ fn is_name_char(uchar: Int) -> Bool {
     || is_in_range(uchar, from: 0x0041, to: 0x005A)
     // [0-9]
     || is_in_range(uchar, from: 0x0030, to: 0x0039)
-    // '_' 
+    // '_'
     || uchar == 0x005F
-    // '-' 
+    // '-'
     || uchar == 0x002D
     // '.'
     || uchar == 0x002E
     // middle dot
     || uchar == 0x00B7
-    // common range 
+    // common range
     || is_common_range(uchar)
     || is_in_range(uchar, from: 0x0300, to: 0x036F)
     || is_in_range(uchar, from: 0x203F, to: 0x2040)
@@ -1169,7 +1169,7 @@ fn next_char(input: Input) -> Result(Input, InputError) {
 
 fn next_char_eof(input: Input) -> Result(Input, InputError) {
   case next_char(input) {
-    // NOTE: original catches End_of_file like this:   
+    // NOTE: original catches End_of_file like this:
     //   let nextc_eof i = try nextc i with End_of_file -> i.c <- u_eoi
     Error(InputError(_, UnicodeLexerErrorEoi)) ->
       Ok(Input(..input, char: u_eoi))
@@ -1278,7 +1278,7 @@ fn expand_name(input: Input, name: Name) -> Result(Name, InputError) {
 }
 
 /// An XML Name, minus the colon (`:`)
-/// 
+///
 /// XML Namespace 1.1 non-terminal: {NCName}
 /// https://www.w3.org/TR/2006/REC-xml-names11-20060816/#NT-NCName
 fn parse_ncname(input: Input) -> Result(#(String, Input), InputError) {
@@ -1596,8 +1596,8 @@ fn parse_attribute_value__loop(
 /// Returns a list of bound prefixes and attributes
 ///
 /// XML 1.0 non-terminals:  ({S} {Attribute})* {S}?
-/// 
-/// TODO: currently returns the attributes in reverse 
+///
+/// TODO: currently returns the attributes in reverse
 fn parse_attributes(
   input: Input,
 ) -> Result(#(List(String), List(Attribute), Input), InputError) {
@@ -1653,7 +1653,7 @@ fn parse_attributes__loop__handle_qname_and_value(
 
                   case string.is_empty(prefix) && { local == n_xmlns } {
                     True -> {
-                      // xmlns 
+                      // xmlns
                       let ns = dict.insert(input.ns, "", attribute_value)
                       let input = Input(..input, ns: ns)
                       parse_attributes__loop(input, ["", ..pre_acc], [
@@ -1664,7 +1664,7 @@ fn parse_attributes__loop__handle_qname_and_value(
                     False -> {
                       case prefix == n_xmlns {
                         True -> {
-                          // xmlns:local 
+                          // xmlns:local
                           let ns = dict.insert(input.ns, local, attribute_value)
                           let input = Input(..input, ns: ns)
                           parse_attributes__loop(input, [local, ..pre_acc], [
@@ -1922,7 +1922,7 @@ fn skip_pi__loop(input: Input) -> Result(Input, InputError) {
   }
 }
 
-/// XML 1.0 non-terminal: {Misc} 
+/// XML 1.0 non-terminal: {Misc}
 fn skip_misc(
   input: Input,
   allow_xmlpi allow_xmlpi: Bool,
@@ -1990,7 +1990,7 @@ fn parse_chardata__handle_reference(
   input: Input,
   add_char: fn(Input, Int) -> Input,
 ) -> Result(Input, InputError) {
-  // String.iter (addc i) (p_reference i) 
+  // String.iter (addc i) (p_reference i)
   case parse_reference(input) {
     Error(e) -> Error(e)
     Ok(#(reference, input)) -> {
@@ -2045,12 +2045,12 @@ fn parse_chardata__handle_rbrack(
               // Now, we need to eat any other right brackets that
               // directly follow the one we just ate, (with the goal of
               // detecting detects ']'*']]>'). Basically keep going
-              // until you don't hit a right bracket. 
+              // until you don't hit a right bracket.
               case parse_chardata__loop(input, add_char) {
                 Error(e) -> Error(e)
                 Ok(input) -> {
                   // Finally, check for `>` which would make a `]]>` which
-                  // is illegal here. 
+                  // is illegal here.
                   case input.char == u_gt {
                     True -> error(input, IllegalCharSeq("]]>"))
                     False -> Ok(input)
@@ -2223,7 +2223,7 @@ fn parse_dtd_signal__loop(
                   case next_char(input) {
                     Error(e) -> Error(e)
                     Ok(input) -> {
-                      // Comments require care 
+                      // Comments require care
                       case input.char != u_minus {
                         True -> {
                           let input = add_char_to_data(input, u_lt)
@@ -2536,7 +2536,7 @@ fn parse_signal__non_empty_scope(
 ) -> Result(#(Signal, Input), InputError) {
   let result = case input.peek {
     ElementStart(_) -> {
-      // Finish to input start element. 
+      // Finish to input start element.
       case skip_whitespace(input) {
         Error(e) -> Error(e)
         Ok(input) -> {
@@ -2612,7 +2612,7 @@ fn parse_signal__find(input: Input) -> Result(#(Signal, Input), InputError) {
 }
 
 /// `eoi(input)` tells if the end of input is reached.
-/// 
+///
 pub fn eoi(input: Input) -> Result(#(Bool, Input), InputError) {
   use <- bool.guard(when: input.char == u_eoi, return: Ok(#(True, input)))
 
@@ -2657,11 +2657,11 @@ fn find_encoding(input: Input) {
 
   case input.encoding {
     None -> {
-      // User doesn't know the encoding. 
+      // User doesn't know the encoding.
       use input <- result.try(next_char(input))
       case input.char {
         0xFE -> {
-          // UTF-16BE BOM 
+          // UTF-16BE BOM
           use input <- result.try(next_char(input))
           use <- bool.lazy_guard(when: input.char != 0xFF, return: fn() {
             error(input, MalformedCharStream)
@@ -2670,7 +2670,7 @@ fn find_encoding(input: Input) {
           Ok(#(True, input))
         }
         0xFF -> {
-          // UTF-16LE BOM 
+          // UTF-16LE BOM
           use input <- result.try(next_char(input))
           use <- bool.lazy_guard(when: input.char != 0xFE, return: fn() {
             error(input, MalformedCharStream)
@@ -2679,7 +2679,7 @@ fn find_encoding(input: Input) {
           Ok(#(True, input))
         }
         0xEF -> {
-          // UTF-8 BOM 
+          // UTF-8 BOM
           use input <- result.try(next_char(input))
           use <- bool.lazy_guard(when: input.char != 0xBB, return: fn() {
             error(input, MalformedCharStream)
@@ -2692,20 +2692,20 @@ fn find_encoding(input: Input) {
           Ok(#(True, input))
         }
         0x3C | _ -> {
-          // UTF-8 or other, try declaration 
+          // UTF-8 or other, try declaration
           Ok(#(False, Input(..input, uchar: input_uchar_utf8())))
         }
       }
     }
     Some(encoding) -> {
-      // User knows encoding 
+      // User knows encoding
       use input <- result.try(case encoding {
         UsAscii -> reset(input, input_uchar_ascii())
         Iso8859x1 -> reset(input, input_uchar_iso_8859_1())
         Iso8859x15 -> reset(input, input_uchar_iso_8859_15())
         Utf8 -> {
           use input <- result.try(reset(input, input_uchar_utf8()))
-          // Skip BOM if present 
+          // Skip BOM if present
           use <- bool.lazy_guard(when: input.char == u_bom, return: fn() {
             let input = Input(..input, column: 0)
             use input <- result.try(next_char(input))
@@ -2714,7 +2714,7 @@ fn find_encoding(input: Input) {
           Ok(input)
         }
         Utf16 -> {
-          // Which UTF-16? Look at the BOM. 
+          // Which UTF-16? Look at the BOM.
           use input <- result.try(next_char(input))
           let byte0 = input.char
           use input <- result.try(next_char(input))
@@ -2728,7 +2728,7 @@ fn find_encoding(input: Input) {
         }
         Utf16Be -> {
           use input <- result.try(reset(input, input_uchar_utf16be()))
-          // Skip BOM if present 
+          // Skip BOM if present
           use <- bool.lazy_guard(when: input.char == u_bom, return: fn() {
             let input = Input(..input, column: 0)
             use input <- result.try(next_char(input))
@@ -2738,7 +2738,7 @@ fn find_encoding(input: Input) {
         }
         Utf16Le -> {
           use input <- result.try(reset(input, input_uchar_utf16le()))
-          // Skip BOM if present 
+          // Skip BOM if present
           use <- bool.lazy_guard(when: input.char == u_bom, return: fn() {
             let input = Input(..input, column: 0)
             use input <- result.try(next_char(input))
@@ -2805,7 +2805,7 @@ fn parse_xml_declaration(
             use #(name, input) <- result.try(parse_ncname(input))
 
             use input <- result.try({
-              // 
+              //
               case name == n_encoding {
                 True -> {
                   use #(encoding, input) <- result.try(parse_val(input))
@@ -2898,9 +2898,45 @@ fn parse_xml_declaration(
   }
 }
 
-/// `xmlm.peek(input)` is the same as `xmlm.signal(input)` except that
-/// the signal is not removed from the sequence.
-/// 
+/// `xmlm.peek(input)` is similar to `xmlm.signal(input)` except that
+/// the signal is not removed from the sequence in the returned `Input`.
+///
+/// You may be wondering why you would want to use `peek` in a language without
+/// mutation. Check out this example:
+///
+/// ```gleam
+/// // Imagine this is in some important function....
+///
+/// // An xmlm input value
+/// let input = todo
+///
+/// case signal(input) {
+///   Ok(#(signal, next_input)) -> {
+///     // Some logic that checks if the signal conforms to your expectations
+///     case signal == ... {
+///       // It's the signal we expected so return it and the next input.
+///       True -> Ok(#(signal, next_input))
+///       // It's not the signal we expected so return the old input.
+///       False -> Error(input)
+///     }
+///   }
+///   Error(_) -> todo
+/// }
+/// ```
+///
+/// You can see that we didn't use `peek` and yet, we can still return the
+/// original `input` to the user if we need to, and that value will not have
+/// changed.
+///
+/// That works fine, and if it's working for you without issue, then it's no
+/// problem!
+///
+/// However, `peek` much faster than `signal` (on the order of about 5x on
+/// Erlang and 50x on JS), so sometimes it makes sense to use it when you don't
+/// need to advance the sequence. Additionally, it may be useful to use `peek`
+/// to better express your intent of "just checking on the next signal" rather
+/// than inputting it.
+///
 pub fn peek(input: Input) -> Result(#(Signal, Input), InputError) {
   case eoi(input) {
     Error(e) -> Error(e)
@@ -2909,18 +2945,27 @@ pub fn peek(input: Input) -> Result(#(Signal, Input), InputError) {
   }
 }
 
-/// `xmlm.signal(input)` inputs a `Signal`.  
-/// 
-/// Repeatedly invoking the function with the same input abstraction will
-/// either generate a well-formed sequence apple shton of signals or raise an
-/// error. Additionally, no two consecutive Data signals can appear in the
-/// sequence, and their strings will always be non-empty.
-/// 
-/// Note: Currently, after a well-formed sequence has been input, another 
-/// sequence can be input.  However, this behavior is **deprecated**. (It is 
-/// inherited from the OCaml library on which this one is based, and will chage 
-/// at some point in the future.)
-/// 
+/// `xmlm.signal(input)` inputs a `Signal`.
+///
+/// Repeatedly invoking the function on the `Input` that is returned, will
+/// either generate a well-formed sequence of signals or raise an error.
+///
+/// ```gleam
+/// let input = todo
+///
+/// // Shadow the old input with the new one.
+/// use #(signal, input) <- result.try(signal(input))
+/// // And then use it to call signal again.
+/// use #(signal, input) <- result.try(signal(input))
+/// // ...
+/// ```
+///
+/// Additionally, no two consecutive Data signals can appear in the sequence,
+/// and their strings will always be non-empty.
+///
+/// Note: Currently, after a well-formed sequence has been input, another
+/// sequence can be input.  However, this behavior is **deprecated**.
+///
 pub fn signal(input: Input) -> Result(#(Signal, Input), InputError) {
   // Note: this guard is for the document sequences. document sequences will
   // eventually be removed.
@@ -2947,7 +2992,7 @@ pub fn signal(input: Input) -> Result(#(Signal, Input), InputError) {
 }
 
 /// Return a list of all `Signals` in the given `input`.
-/// 
+///
 pub fn signals(input) -> Result(#(List(Signal), Input), InputError) {
   do_input_signals(input, [])
 }
@@ -2973,10 +3018,10 @@ fn do_input_signals(
   }
 }
 
-/// `xmlm.fold_signals(over: input, from: acc, with: f)` reduces the `Signals` 
-/// of the `input` to a single value starting with `acc` by calling the given 
+/// `xmlm.fold_signals(over: input, from: acc, with: f)` reduces the `Signals`
+/// of the `input` to a single value starting with `acc` by calling the given
 /// function `f` on each `Signal` in the `input`.
-/// 
+///
 pub fn fold_signals(
   over input: Input,
   from acc: acc,
@@ -2998,26 +3043,26 @@ pub fn fold_signals(
   }
 }
 
-/// `xmlm.tree(input, element_callback, data_callback)` inputs signals in 
+/// `xmlm.tree(input, element_callback, data_callback)` inputs signals in
 /// different ways depending on the next signal.
-/// 
+///
 /// If the next signal is a...
-/// 
-/// - `Data` signal, `tree` inputs the signal and invokes `data_callback` with 
+///
+/// - `Data` signal, `tree` inputs the signal and invokes `data_callback` with
 ///   the character data of the signal.
-/// - `ElementStart` signal, `tree` inputs the sequence of signals until its 
-///   matching `ElementEnd` and envokes `element_callback` and `data_callback` 
+/// - `ElementStart` signal, `tree` inputs the sequence of signals until its
+///   matching `ElementEnd` and envokes `element_callback` and `data_callback`
 ///   as follows:
-///   - `element_callback` is called on each `ElementEnd` signal with the 
-///     corresponding `ElementStart` tag and the result of the callback 
+///   - `element_callback` is called on each `ElementEnd` signal with the
+///     corresponding `ElementStart` tag and the result of the callback
 ///     invocation for the element's children.
-///   - `data_callback` is called on each `Data` signal with the character data.  
-///     This function won't be called twice consecutively or with the empty 
+///   - `data_callback` is called on each `Data` signal with the character data.
+///     This function won't be called twice consecutively or with the empty
 ///     string.
 /// - Other signals, returns an error.
-/// 
-/// See [document_tree](#document_tree) for getting the entire document as a 
-/// tree. 
+///
+/// See [document_tree](#document_tree) for getting the entire document as a
+/// tree.
 ///
 pub fn tree(
   input: Input,
@@ -3101,10 +3146,10 @@ fn tree__loop(
   }
 }
 
-/// `xmlm.document_tree(input, element_callback, data_callback)` reads a 
+/// `xmlm.document_tree(input, element_callback, data_callback)` reads a
 /// complete, well-formed sequence of signals.
-/// 
-/// See [tree](#tree) for getting a tree produced by a single `Signal`. 
+///
+/// See [tree](#tree) for getting a tree produced by a single `Signal`.
 ///
 pub fn document_tree(
   input: Input,
@@ -3142,7 +3187,7 @@ fn buffer_new() -> Buffer {
 
 /// UTF-8 encode a uchar in the buffer. Assumes that `uchar` is a valid
 /// codepoint.
-/// 
+///
 fn buffer_add_uchar(buffer: Buffer, uchar: Int) -> Buffer {
   case uchar <= 0x007F {
     True -> [uchar, ..buffer]
