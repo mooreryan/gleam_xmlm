@@ -226,7 +226,7 @@ pub fn xml_decl__test() {
   |> xmlm.signals
   |> result.map(pair.first)
   |> result.map(xmlm.signals_to_string)
-  // TODO: should be 'expected root element' 
+  // TODO: should be 'expected root element'
   |> should.be_error
 }
 
@@ -1564,4 +1564,22 @@ pub fn text_err_01__test() {
 
 pub fn text_err_02__test() {
   "<p>\u{0c}</p>" |> xmlm_signals_should_be_error
+}
+
+// =============================================================================
+// Basic properties
+// =============================================================================
+
+pub fn running_signals_on_the_same_input_twice__test() {
+  let assert Ok(xml) = simplifile.read("test/test_files/snack.UTF8.xml")
+
+  let input =
+    xml
+    |> xmlm.from_string
+    |> xmlm.with_encoding(xmlm.Utf8)
+
+  let assert Ok(#(signals_1, _input)) = xmlm.signals(input)
+  let assert Ok(#(signals_2, _input)) = xmlm.signals(input)
+
+  assert signals_1 == signals_2
 }
