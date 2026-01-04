@@ -1,8 +1,7 @@
 *.beam
 *.ez
+.DS_Store
 /build
-erl_crash.dump
-
 _*
-
+erl_crash.dump
 test/*/scratch.gleam
