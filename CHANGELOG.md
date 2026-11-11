@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Fix namespace bindings not being restored when an element that redeclares
+  them ends
+
 ## [1.0.1] -- 2024-07-09
 
 - Update dependencies and address deprecations
