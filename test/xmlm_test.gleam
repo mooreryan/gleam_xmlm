@@ -437,6 +437,54 @@ pub fn unknown_namespace_prefix_with_namespace_callback_unresolved__test() {
   )
 }
 
+pub fn default_namespace_restored_after_element__test() {
+  "<a><b xmlns=\"urn:b\"/><c/></a>"
+  |> xmlm.from_string
+  |> xmlm.signals
+  |> result.map(pair.first)
+  |> should.equal(
+    Ok([
+      Dtd(None),
+      ElementStart(Tag(Name("", "a"), [])),
+      ElementStart(
+        Tag(Name("urn:b", "b"), [
+          Attribute(Name("http://www.w3.org/2000/xmlns/", "xmlns"), "urn:b"),
+        ]),
+      ),
+      ElementEnd,
+      ElementStart(Tag(Name("", "c"), [])),
+      ElementEnd,
+      ElementEnd,
+    ]),
+  )
+}
+
+pub fn shadowed_prefix_restored_after_element__test() {
+  "<a xmlns:p=\"urn:1\"><b xmlns:p=\"urn:2\"/><p:c/></a>"
+  |> xmlm.from_string
+  |> xmlm.signals
+  |> result.map(pair.first)
+  |> should.equal(
+    Ok([
+      Dtd(None),
+      ElementStart(
+        Tag(Name("", "a"), [
+          Attribute(Name("http://www.w3.org/2000/xmlns/", "p"), "urn:1"),
+        ]),
+      ),
+      ElementStart(
+        Tag(Name("", "b"), [
+          Attribute(Name("http://www.w3.org/2000/xmlns/", "p"), "urn:2"),
+        ]),
+      ),
+      ElementEnd,
+      ElementStart(Tag(Name("urn:1", "c"), [])),
+      ElementEnd,
+      ElementEnd,
+    ]),
+  )
+}
+
 // =============================================================================
 // Entities
 // =============================================================================

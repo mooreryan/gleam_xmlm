@@ -815,8 +815,9 @@ pub opaque type Input {
     stripping: Bool,
     /// True if last char was white
     last_whitespace: Bool,
-    /// Stack of qualified el. name, bound prefixes and strip behaviour
-    scopes: List(#(Name, List(String), Bool)),
+    /// Stack of qualified el. name, prefix bindings to restore at its end and
+    /// strip behaviour
+    scopes: List(#(Name, Dict(String, String), Bool)),
     /// prefix -> uri bindings
     ns: Dict(String, String),
     /// Buffer for names and entity refs
@@ -1600,30 +1601,24 @@ fn parse_attribute_value__loop(
 /// TODO: currently returns the attributes in reverse
 fn parse_attributes(
   input: Input,
-) -> Result(#(List(String), List(Attribute), Input), InputError) {
-  parse_attributes__loop(input, [], [])
+) -> Result(#(List(Attribute), Input), InputError) {
+  parse_attributes__loop(input, [])
 }
 
 fn parse_attributes__loop(
   input: Input,
-  pre_acc: List(String),
   acc: List(Attribute),
-) -> Result(#(List(String), List(Attribute), Input), InputError) {
+) -> Result(#(List(Attribute), Input), InputError) {
   case is_whitespace(input.char) {
-    False -> Ok(#(pre_acc, acc, input))
+    False -> Ok(#(acc, input))
     True -> {
       case skip_whitespace(input) {
         Error(e) -> Error(e)
         Ok(input) -> {
           case input.char {
-            char if char == u_slash || input.char == u_gt ->
-              Ok(#(pre_acc, acc, input))
+            char if char == u_slash || input.char == u_gt -> Ok(#(acc, input))
             _ -> {
-              parse_attributes__loop__handle_qname_and_value(
-                input,
-                pre_acc,
-                acc,
-              )
+              parse_attributes__loop__handle_qname_and_value(input, acc)
             }
           }
         }
@@ -1634,9 +1629,8 @@ fn parse_attributes__loop(
 
 fn parse_attributes__loop__handle_qname_and_value(
   input: Input,
-  pre_acc: List(String),
   acc: List(Attribute),
-) -> Result(#(List(String), List(Attribute), Input), InputError) {
+) -> Result(#(List(Attribute), Input), InputError) {
   case parse_qname(input) {
     Error(e) -> Error(e)
     Ok(#(Name(prefix, local) as name, input)) -> {
@@ -1656,10 +1650,7 @@ fn parse_attributes__loop__handle_qname_and_value(
                       // xmlns
                       let ns = dict.insert(input.ns, "", attribute_value)
                       let input = Input(..input, ns: ns)
-                      parse_attributes__loop(input, ["", ..pre_acc], [
-                        attribute,
-                        ..acc
-                      ])
+                      parse_attributes__loop(input, [attribute, ..acc])
                     }
                     False -> {
                       case prefix == n_xmlns {
@@ -1667,10 +1658,7 @@ fn parse_attributes__loop__handle_qname_and_value(
                           // xmlns:local
                           let ns = dict.insert(input.ns, local, attribute_value)
                           let input = Input(..input, ns: ns)
-                          parse_attributes__loop(input, [local, ..pre_acc], [
-                            attribute,
-                            ..acc
-                          ])
+                          parse_attributes__loop(input, [attribute, ..acc])
                         }
                         False -> {
                           let input =
@@ -1681,10 +1669,7 @@ fn parse_attributes__loop__handle_qname_and_value(
                               local: local,
                             )
 
-                          parse_attributes__loop(input, pre_acc, [
-                            attribute,
-                            ..acc
-                          ])
+                          parse_attributes__loop(input, [attribute, ..acc])
                         }
                       }
                     }
@@ -2394,14 +2379,14 @@ fn parse_element_start_signal(
   input: Input,
   name: Name,
 ) -> Result(#(Signal, Input), InputError) {
-  // save it here, parse_attributes may change it
+  // save them here, parse_attributes may change them
   let strip = input.stripping
+  let ns = input.ns
 
   case parse_attributes(input) {
     Error(e) -> Error(e)
-    Ok(#(prefixes, attributes, input)) -> {
-      let input =
-        Input(..input, scopes: [#(name, prefixes, strip), ..input.scopes])
+    Ok(#(attributes, input)) -> {
+      let input = Input(..input, scopes: [#(name, ns, strip), ..input.scopes])
 
       let attributes = list.reverse(attributes)
 
@@ -2467,7 +2452,7 @@ fn parse_element_end_signal(
   name: Name,
 ) -> Result(#(Signal, Input), InputError) {
   case input.scopes {
-    [#(name_, prefixes, strip), ..scopes] -> {
+    [#(name_, ns, strip), ..scopes] -> {
       case input.char != u_gt {
         True -> error_expected_chars(input, [u_gt])
         False -> {
@@ -2481,14 +2466,7 @@ fn parse_element_end_signal(
             }
             False -> {
               let input =
-                Input(
-                  ..input,
-                  scopes: scopes,
-                  stripping: strip,
-                  ns: list.fold(prefixes, input.ns, fn(dict, prefix) {
-                    dict.delete(dict, prefix)
-                  }),
-                )
+                Input(..input, scopes: scopes, stripping: strip, ns: ns)
 
               let input = case scopes {
                 [] -> Ok(Input(..input, char: u_end_doc))
